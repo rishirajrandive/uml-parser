@@ -2,7 +2,7 @@
 
 **UML Parser** is an application to generate UML Class diagrams for Java classes. This project tasks are managed by Kanban board created using [Waffle](https://waffle.io/)
 
-Following are the libraries used in this project:
+Following are the tools/libraries used in this project:
 
 1. **[Javaparser](http://javaparser.org/index.html)**: Easy to understand and use, it gives Abstract Syntax Tree (AST) from java code. Parsed java class can be easily processed to generate the UML diagram
 
