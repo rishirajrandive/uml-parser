@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 import japa.parser.ast.body.ConstructorDeclaration;
@@ -6,10 +7,17 @@ import japa.parser.ast.body.MethodDeclaration;
 
 public class Element {
 
-	List<FieldDeclaration> fieldDeclarations;
-	List<MethodDeclaration> methodDeclarations;
-	List<ConstructorDeclaration> constructorDeclarations;
-	boolean isInterface;
+	private List<FieldDeclaration> fieldDeclarations;
+	private List<MethodDeclaration> methodDeclarations;
+	private List<ConstructorDeclaration> constructorDeclarations;
+	private boolean isInterface;
+	private String name;
+	
+	public Element() {
+		fieldDeclarations = new ArrayList<>();
+		methodDeclarations = new ArrayList<>();
+		constructorDeclarations = new ArrayList<>();
+	}
 	
 	/**
 	 * @return the fieldDeclarations
@@ -58,5 +66,19 @@ public class Element {
 	 */
 	public void setInterface(boolean isInterface) {
 		this.isInterface = isInterface;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 }

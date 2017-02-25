@@ -1,6 +1,5 @@
 
-public enum RelationType {
-
+public enum RelationType {	
 	EXTENDS,
 	IMPLEMENTS
 }

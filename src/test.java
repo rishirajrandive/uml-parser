@@ -8,3 +8,9 @@ public class test {
 		System.out.println("Num value is "+ num);
 	}
 }
+
+//class Hello1 {
+//    private String str ;
+//    public String getStr() { return this.str ; }
+//    public void   setStr(String value) { this.str = value ; }
+//}
