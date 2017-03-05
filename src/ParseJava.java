@@ -81,81 +81,114 @@ public class ParseJava {
 			List<BodyDeclaration> bodyDeclarations = type.getMembers();
 			boolean isInterface = ((ClassOrInterfaceDeclaration) type).isInterface();
 			System.out.println("Name "+type.getName());
-			Element element = new Element();
+			UMLClass element = new UMLClass();
 			element.setName(type.getName());
 			element.setInterface(isInterface);;
 			
 			for(BodyDeclaration body : bodyDeclarations){
 				if(body instanceof FieldDeclaration){
-					element.getFieldDeclarations().add((FieldDeclaration) body);
-					
-					List<FieldDeclaration> fieldDeclarations = element.getFieldDeclarations();
-					for(FieldDeclaration field : fieldDeclarations){
-						Type fieldType = field.getType();
-						if(isElement(fieldType)){	
-							Map<RelationType, List<String>> relations = new HashMap<>();
-							List<String> relatives = null;
-							if(relations.containsKey(RelationType.ASSOCIATION)){
-								relatives = relations.get(RelationType.ASSOCIATION);
-								relatives.add(getElementName(fieldType.toString()));
-							}else{
-								relatives = new ArrayList<>();
-								relatives.add(getElementName(fieldType.toString()));
-								relations.put(RelationType.ASSOCIATION, relatives);
-							}
-							element.setRelations(relations);
-						}
-					}
-					
-					
+					createUMLVariables(element, (FieldDeclaration) body);
+					createRelatives(element, (FieldDeclaration) body);
 				}else if(body instanceof MethodDeclaration){
-					element.getMethodDeclarations().add((MethodDeclaration) body);
+					createUMLMethods(element, (MethodDeclaration) body, false);
 				}else if(body instanceof ConstructorDeclaration){
-					element.getConstructorDeclarations().add((ConstructorDeclaration) body);
+					createUMLMethods(element, (ConstructorDeclaration) body, true);
 				}
 			}
 			group.getElements().add(element);
 		}
 	}
 	
+	private void createUMLVariables(UMLClass umlClass, FieldDeclaration field){
+		List<VariableDeclarator> variables = field.getVariables();
+		for(VariableDeclarator variable : variables){
+			UMLVariable umlVariable = new UMLVariable();
+			umlVariable.setModifier(field.getModifiers());
+			umlVariable.setMultiple(isArray(field.getType()));
+			umlVariable.setName(variable.getId().getName());
+			umlVariable.setInitialValue(variable.getInit() == null ? "" : " = " + variable.getInit().toString());
+			umlVariable.setUMLClassType(isUMLClassType(field.getType()));
+			umlVariable.setType(field.getType());
+			umlClass.getUMLVariables().add(umlVariable);
+		}
+	}
+	
+	private void createRelatives(UMLClass umlClass, FieldDeclaration field){
+		Type fieldType = field.getType();
+		if(isUMLClassType(fieldType)){	
+			Map<RelationType, List<String>> relations = new HashMap<>();
+			List<String> relatives = null;
+			if(relations.containsKey(RelationType.ASSOCIATION)){
+				relatives = relations.get(RelationType.ASSOCIATION);
+				relatives.add(getElementName(fieldType.toString()));
+			}else{
+				relatives = new ArrayList<>();
+				relatives.add(getElementName(fieldType.toString()));
+				relations.put(RelationType.ASSOCIATION, relatives);
+			}
+			umlClass.setRelations(relations);
+		}
+	}
+	
+	private void createUMLMethods(UMLClass umlClass, BodyDeclaration body, boolean isConstructor){
+		UMLMethod umlMethod = new UMLMethod();
+		if(isConstructor){
+			ConstructorDeclaration constructor = (ConstructorDeclaration) body;
+			umlMethod.setConstructor(true);
+			umlMethod.setModifier(constructor.getModifiers());
+			umlMethod.setName(constructor.getName());
+			umlMethod.setParameters(constructor.getParameters());
+		}else {
+			MethodDeclaration method = (MethodDeclaration) body;
+			umlMethod.setConstructor(false);
+			umlMethod.setModifier(method.getModifiers());
+			umlMethod.setName(method.getName());
+			umlMethod.setParameters(method.getParameters());
+			umlMethod.setType(method.getType());
+		}
+		umlClass.getUMLMethods().add(umlMethod);
+	}
+	
 	public void generateUML(){
 		StringBuilder umlSource = new StringBuilder();
 		umlSource.append("@startuml\nskinparam classAttributeIconSize 0\n");
-		for(Element element : group.getElements()){
+		for(UMLClass element : group.getElements()){
 			if(element.isInterface()){
 				umlSource.append("interface " + element.getName() + " << interface >> {\n");
 			}else {
 				umlSource.append("class " + element.getName() + " {\n");
 			}
 			
-			List<FieldDeclaration> fieldDeclarations = element.getFieldDeclarations();
-			for(FieldDeclaration field : fieldDeclarations){
-				List<VariableDeclarator> variables = field.getVariables();
-				for(VariableDeclarator variable : variables){
-					umlSource.append(Modifiers.valueOf(field.getModifiers()));
-					umlSource.append(variable.getId().getName() + ":" + field.getType() + (variable.getInit() == null ? "" : " = " + variable.getInit().toString()) + "\n");
-				}
+			List<UMLVariable> variables = element.getUMLVariables();
+			for(UMLVariable variable : variables){
+				umlSource.append(variable.getUMLString());
 			}
 			
-			List<ConstructorDeclaration> constructors = element.getConstructorDeclarations();
-			for(ConstructorDeclaration constructor : constructors){
-				List<Parameter> parameters = constructor.getParameters();
-				if(parameters != null){
-					umlSource.append(Modifiers.valueOf(constructor.getModifiers()));
-					umlSource.append(constructor.getName() + "(");
-					for(int i=0; i < parameters.size(); i++){
-						umlSource.append(parameters.get(i).getId().getName() + ":" + parameters.get(i).getType());
-					}
-					// TODO Make sure more than one parameters could be added
-					umlSource.append(") \n");
+			boolean hasSetter = false;
+			boolean hasGetter = true;
+			String setVariable = "";
+			String getVariable = "";
+			UMLMethod setterMethod = null;
+			List<UMLMethod> methods = element.getUMLMethods();
+			for(UMLMethod method : methods){
+				if(method.isConstructor()){
+					umlSource.append(method.getParameterizedUMLString());
+				}else if(method.getName().contains("set")){
+					hasSetter = true;
+					setVariable = method.getName().split("set")[1];
+					setterMethod = method;
+				}else if(method.getName().contains("get")){
+					hasGetter = true;
+					getVariable = method.getName().split("get")[1];
+					umlSource.append(method.getUMLString());
+				}else {
+					umlSource.append(method.getUMLString());
 				}
 			}
-			
-			List<MethodDeclaration> methods = element.getMethodDeclarations();
-			for(MethodDeclaration method : methods){
-				umlSource.append(Modifiers.valueOf(method.getModifiers()));
-				umlSource.append(method.getName() + "():" + method.getType() + "\n");
+			if(hasGetter && hasSetter && setVariable.equalsIgnoreCase(getVariable) && setterMethod != null){
+				umlSource.append(setterMethod.getParameterizedUMLString());
 			}
+			
 			umlSource.append("}\n\n");
 			
 			//Add relationships
@@ -188,7 +221,7 @@ public class ParseJava {
 		}
 	}
 	
-	private boolean isElement(Type type){
+	private boolean isUMLClassType(Type type){
 		String typeStr = getElementName(type.toString());
 		if(type instanceof ReferenceType){
 			ReferenceType actualType = (ReferenceType) type;
@@ -207,6 +240,9 @@ public class ParseJava {
 		return true;
 	}
 	
+	private boolean isArray(Type type){
+		return (type.toString().contains("["));
+	}
 	private String getElementName(String typeStr){
 		if(typeStr.contains("[")){
 			System.out.println("Found array []");

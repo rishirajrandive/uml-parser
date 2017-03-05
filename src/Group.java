@@ -4,7 +4,7 @@ import java.util.List;
 public class Group {
 
 	private static Group group;
-	private List<Element> elements;
+	private List<UMLClass> elements;
 	
 	public static Group getInstance(){
 		if(group == null){
@@ -20,14 +20,14 @@ public class Group {
 	/**
 	 * @return the elements
 	 */
-	public List<Element> getElements() {
+	public List<UMLClass> getElements() {
 		return elements;
 	}
 
 	/**
 	 * @param elements the elements to set
 	 */
-	public void setElements(List<Element> elements) {
+	public void setElements(List<UMLClass> elements) {
 		this.elements = elements;
 	}
 	

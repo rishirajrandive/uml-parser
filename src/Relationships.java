@@ -3,8 +3,8 @@ import java.util.Map;
 
 public class Relationships {
 
-	private Element parent;
-	private Element child;
+	private UMLClass parent;
+	private UMLClass child;
 	private RelationType type;
 	private String parentCardinality;
 	private String childCardinality;
@@ -13,25 +13,25 @@ public class Relationships {
 	/**
 	 * @return the parent
 	 */
-	public Element getParent() {
+	public UMLClass getParent() {
 		return parent;
 	}
 	/**
 	 * @param parent the parent to set
 	 */
-	public void setParent(Element parent) {
+	public void setParent(UMLClass parent) {
 		this.parent = parent;
 	}
 	/**
 	 * @return the child
 	 */
-	public Element getChild() {
+	public UMLClass getChild() {
 		return child;
 	}
 	/**
 	 * @param child the child to set
 	 */
-	public void setChild(Element child) {
+	public void setChild(UMLClass child) {
 		this.child = child;
 	}
 	/**
