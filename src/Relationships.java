@@ -1,3 +1,5 @@
+import java.util.List;
+import java.util.Map;
 
 public class Relationships {
 
@@ -6,6 +8,7 @@ public class Relationships {
 	private RelationType type;
 	private String parentCardinality;
 	private String childCardinality;
+	
 	
 	/**
 	 * @return the parent

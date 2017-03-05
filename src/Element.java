@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import japa.parser.ast.body.ConstructorDeclaration;
 import japa.parser.ast.body.FieldDeclaration;
@@ -12,11 +14,13 @@ public class Element {
 	private List<ConstructorDeclaration> constructorDeclarations;
 	private boolean isInterface;
 	private String name;
+	private Map<RelationType, List<String>> relations;
 	
 	public Element() {
 		fieldDeclarations = new ArrayList<>();
 		methodDeclarations = new ArrayList<>();
 		constructorDeclarations = new ArrayList<>();
+		relations = new HashMap<>();
 	}
 	
 	/**
@@ -81,4 +85,20 @@ public class Element {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	/**
+	 * @return the relations
+	 */
+	public Map<RelationType, List<String>> getRelations() {
+		return relations;
+	}
+
+	/**
+	 * @param relations the relations to set
+	 */
+	public void setRelations(Map<RelationType, List<String>> relations) {
+		this.relations = relations;
+	}
+	
+	
 }

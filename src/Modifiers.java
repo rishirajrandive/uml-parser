@@ -1,8 +1,10 @@
 
 public enum Modifiers {
 
-	PRIVATE(4, "-"),
-	PUBLIC(1, "+");
+	PRIVATE(2, "-"),
+	PROTECTED(4, "#"),
+	PUBLIC(1, "+"),
+	PACKAGE(0, "~");
 	
 	private int modifier;
 	private String symbol;
@@ -18,5 +20,14 @@ public enum Modifiers {
 	
 	public String getSymbol(){
 		return this.symbol;
+	}
+	
+	public static String valueOf(int modifier){
+		for(Modifiers mod : Modifiers.values()){
+			if(mod.modifier == modifier){
+				return mod.symbol;
+			}
+		}
+		return "";
 	}
 }

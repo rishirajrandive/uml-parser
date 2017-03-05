@@ -1,16 +1,10 @@
-
 public class test {
-
-	private int num;
-	
-	public void numValDisplay(){
-		num = 20;
-		System.out.println("Num value is "+ num);
-	}
+    private String carColor;
+    private double carPrice = 0.0;
+    public String getCarColor(String model) {
+        return carColor;
+    }
+    public double getCarPrice(String model) {
+        return carPrice;
+    }
 }
-
-//class Hello1 {
-//    private String str ;
-//    public String getStr() { return this.str ; }
-//    public void   setStr(String value) { this.str = value ; }
-//}
