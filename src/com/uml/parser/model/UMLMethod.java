@@ -1,5 +1,9 @@
+package com.uml.parser.model;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.uml.parser.enums.Modifiers;
+
 import japa.parser.ast.type.Type;
 
 import japa.parser.ast.body.Parameter;
@@ -90,6 +94,8 @@ public class UMLMethod {
 			}
 			// TODO Make sure more than one parameters could be added
 			umlStr.append(") \n");
+		}else {
+			return (Modifiers.valueOf(modifier) + name + "() \n");
 		}
 		return umlStr.toString();
 	}

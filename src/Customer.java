@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Customer {
-	private Car[] vehicles;
+    private Car[] vehicles;
     ArrayList<Car> carList = new ArrayList<Car>();
     public Customer(){
         vehicles = new Car[2];

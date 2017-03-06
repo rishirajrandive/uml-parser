@@ -1,11 +1,6 @@
+package com.uml.parser.model;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import japa.parser.ast.body.ConstructorDeclaration;
-import japa.parser.ast.body.FieldDeclaration;
-import japa.parser.ast.body.MethodDeclaration;
 
 public class UMLClass {
 
@@ -14,13 +9,10 @@ public class UMLClass {
 	//private List<ConstructorDeclaration> constructorDeclarations;
 	private boolean isInterface;
 	private String name;
-	private Map<RelationType, List<String>> relations;
 	
 	public UMLClass() {
 		umlVariables = new ArrayList<>();
 		umlMethods = new ArrayList<>();
-//		constructorDeclarations = new ArrayList<>();
-		relations = new HashMap<>();
 	}
 	
 	/**
@@ -47,18 +39,7 @@ public class UMLClass {
 	public void setUMLMethods(List<UMLMethod> umlMethods) {
 		this.umlMethods = umlMethods;
 	}
-//	/**
-//	 * @return the constructorDeclarations
-//	 */
-//	public List<ConstructorDeclaration> getConstructorDeclarations() {
-//		return constructorDeclarations;
-//	}
-//	/**
-//	 * @param constructorDeclarations the constructorDeclarations to set
-//	 */
-//	public void setConstructorDeclarations(List<ConstructorDeclaration> constructorDeclarations) {
-//		this.constructorDeclarations = constructorDeclarations;
-//	}
+	
 	/**
 	 * @return the isInterface
 	 */
@@ -85,20 +66,4 @@ public class UMLClass {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	/**
-	 * @return the relations
-	 */
-	public Map<RelationType, List<String>> getRelations() {
-		return relations;
-	}
-
-	/**
-	 * @param relations the relations to set
-	 */
-	public void setRelations(Map<RelationType, List<String>> relations) {
-		this.relations = relations;
-	}
-	
-	
 }

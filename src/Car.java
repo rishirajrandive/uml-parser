@@ -1,6 +1,5 @@
 public class Car {
-	private String brand;
-	private int[] arr;
+    private String brand;
     public Car(String brands){
         this.brand = brands;
     }

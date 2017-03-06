@@ -1,3 +1,6 @@
+package com.uml.parser.model;
+import com.uml.parser.enums.Modifiers;
+
 import japa.parser.ast.type.Type;
 
 public class UMLVariable {
@@ -6,7 +9,6 @@ public class UMLVariable {
 	private String name;
 	private String initialValue;
 	private boolean isUMLClassType;
-	private boolean isMultiple;
 	private Type type;
 	
 	/**
@@ -56,18 +58,6 @@ public class UMLVariable {
 	 */
 	public void setUMLClassType(boolean isUMLClassType) {
 		this.isUMLClassType = isUMLClassType;
-	}
-	/**
-	 * @return the isMultiple
-	 */
-	public boolean isMultiple() {
-		return isMultiple;
-	}
-	/**
-	 * @param isMultiple the isMultiple to set
-	 */
-	public void setMultiple(boolean isMultiple) {
-		this.isMultiple = isMultiple;
 	}
 	/**
 	 * @return the type

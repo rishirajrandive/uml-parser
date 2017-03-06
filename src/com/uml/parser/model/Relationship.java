@@ -1,37 +1,41 @@
-import java.util.List;
-import java.util.Map;
+package com.uml.parser.model;
+import com.uml.parser.enums.RelationType;
 
-public class Relationships {
+public class Relationship {
 
-	private UMLClass parent;
-	private UMLClass child;
+	private String parent;
+	private String child;
 	private RelationType type;
 	private String parentCardinality;
 	private String childCardinality;
 	
+	public Relationship() {
+		parentCardinality = null;
+		childCardinality = null;
+	}
 	
 	/**
 	 * @return the parent
 	 */
-	public UMLClass getParent() {
+	public String getParent() {
 		return parent;
 	}
 	/**
 	 * @param parent the parent to set
 	 */
-	public void setParent(UMLClass parent) {
+	public void setParent(String parent) {
 		this.parent = parent;
 	}
 	/**
 	 * @return the child
 	 */
-	public UMLClass getChild() {
+	public String getChild() {
 		return child;
 	}
 	/**
 	 * @param child the child to set
 	 */
-	public void setChild(UMLClass child) {
+	public void setChild(String child) {
 		this.child = child;
 	}
 	/**
@@ -69,5 +73,12 @@ public class Relationships {
 	 */
 	public void setChildCardinality(String childCardinality) {
 		this.childCardinality = childCardinality;
+	}
+	
+	public String getUMLString(){
+		if(parentCardinality != null && childCardinality != null){
+			return (parent + "\"" + parentCardinality + "\"" + type.getSymbol() + "\"" + childCardinality + "\"" + child + "\n\n");
+		}
+		return (parent + type.getSymbol() + child + "\n\n");
 	}
 }

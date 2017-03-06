@@ -1,3 +1,4 @@
+package com.uml.parser.enums;
 
 public enum Modifiers {
 
