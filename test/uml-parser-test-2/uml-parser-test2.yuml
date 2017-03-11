@@ -1,0 +1,19 @@
+
+// draw here:   http://yuml.me/diagram/scruffy/class/draw
+// samples:     http://yuml.me/diagram/scruffy/class/samples
+
+// test case #2 / edit
+[C1]uses -.->[<<interface>>;A1],
+[<<interface>>;A1]^-.-[B1],
+[<<interface>>;A1]^-.-[B2],
+[P]^-[B1],
+[P]^-[B2],
+[<<interface>>;A2]^-.-[B2],
+[C2]uses -.->[<<interface>>;A2]
+
+// test case #2 / compact
+[C1]uses -.->[<<interface>>;A1],[<<interface>>;A1]^-.-[B1],[<<interface>>;A1]^-.-[B2],[P]^-[B1],[P]^-[B2],[<<interface>>;A2]^-.-[B2],[C2]uses -.->[<<interface>>;A2]
+
+// test case #2 / http request 
+http://yuml.me/diagram/scruffy/class/[C1]uses%20-.-%3E[%3C%3Cinterface%3E%3E;A1],[%3C%3Cinterface%3E%3E;A1]%5E-.-[B1],[%3C%3Cinterface%3E%3E;A1]%5E-.-[B2],[P]%5E-[B1],[P]%5E-[B2],[%3C%3Cinterface%3E%3E;A2]%5E-.-[B2],[C2]uses%20-.-%3E[%3C%3Cinterface%3E%3E;A2]
+
