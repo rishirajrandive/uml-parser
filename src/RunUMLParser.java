@@ -32,7 +32,8 @@ public class RunUMLParser {
 		}
 		
 		ParseJava obj = new ParseJava();
-		GenerateUML generateUML = new GenerateUML(obj.parseFiles(files));
+		obj.parseFiles(files);
+		GenerateUML generateUML = new GenerateUML();
 		generateUML.generateUML(args[1]);
 	}
 }

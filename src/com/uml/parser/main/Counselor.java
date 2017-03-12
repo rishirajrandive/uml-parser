@@ -19,6 +19,7 @@ public class Counselor {
 	
 	private static Counselor counselor;
 	private List<Relationship> relationships;
+	private List<UMLClass> umlClasses;
 	
 	public static Counselor getInstance(){
 		if(counselor == null){
@@ -29,6 +30,7 @@ public class Counselor {
 	
 	private Counselor() {
 		relationships = new ArrayList<>();
+		umlClasses = new ArrayList<>();
 	}
 
 	public void checkForRelatives(UMLClass umlClass, TypeDeclaration type){
@@ -72,12 +74,17 @@ public class Counselor {
 		if(relationType == RelationType.ASSOCIATION && UMLHelper.isUMLClassArray(relative)){
 			relationship.setParentCardinality("1");
 			relationship.setChildCardinality("0..*");
-			relationship.setChild(UMLHelper.getArrayClassName(relative));
+			relationship.setChild(counselor.getUMLClass(UMLHelper.getArrayClassName(relative)));
 		}else {
-			relationship.setChild(relative.toString());
+			relationship.setChild(counselor.getUMLClass(relative.toString()));
 		}
-		relationship.setParent(umlClass.getName());
+		relationship.setParent(umlClass);
 		addRelation(relationship);
+		
+//		// As there is a relationship it means child is also a Class or Interface, so adding it to the list
+//		// of UMLClasses.
+//		UMLClass childUMLClass = counselor.getUMLClass(relationship.getChild());
+//		counselor.addUMLClass(childUMLClass);
 	}
 	
 	
@@ -98,15 +105,47 @@ public class Counselor {
 	private void addRelation(Relationship newRelation){
 		if(relationships.size() > 0){
 			for(Relationship oldRelation : relationships){
-				if(oldRelation.getParent().equalsIgnoreCase(newRelation.getParent()) && oldRelation.getChild().equalsIgnoreCase(newRelation.getChild()) 
+				if(oldRelation.getParent().getName().equalsIgnoreCase(newRelation.getParent().getName()) && 
+						oldRelation.getChild().getName().equalsIgnoreCase(newRelation.getChild().getName()) 
 						&& oldRelation.getType() == newRelation.getType()){
 					return;
-				}else if(oldRelation.getParent().equalsIgnoreCase(newRelation.getChild()) && oldRelation.getChild().equalsIgnoreCase(newRelation.getParent())
+				}else if(oldRelation.getParent().getName().equalsIgnoreCase(newRelation.getChild().getName()) && 
+						oldRelation.getChild().getName().equalsIgnoreCase(newRelation.getParent().getName())
 						&& oldRelation.getType() == newRelation.getType()){
 					return;
 				}
 			}
 		}
 		relationships.add(newRelation);
+	}
+	
+	public void addUMLClass(UMLClass newUMLClass){
+		if(!hasUMLClass(newUMLClass)){
+			umlClasses.add(newUMLClass);
+		}
+	}
+	
+	public List<UMLClass> getUMLClasses(){
+		return umlClasses;
+	}
+	
+	public UMLClass getUMLClass(String name){
+		for(UMLClass umlClass : umlClasses){
+			if(umlClass.getName().equalsIgnoreCase(name)){
+				return umlClass;
+			}
+		}
+		UMLClass newUMLClass = new UMLClass();
+		newUMLClass.setName(name);
+		return newUMLClass;
+	}
+	
+	public boolean hasUMLClass(UMLClass newUMLClass){
+		for(UMLClass umlClass : umlClasses){
+			if(umlClass.getName().equalsIgnoreCase(newUMLClass.getName())){
+				return true;
+			}
+		}
+		return false;
 	}
 }

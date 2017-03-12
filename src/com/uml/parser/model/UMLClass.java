@@ -11,6 +11,8 @@ public class UMLClass {
 	private String name;
 	
 	public UMLClass() {
+		name = "";
+		isInterface = false;
 		umlVariables = new ArrayList<>();
 		umlMethods = new ArrayList<>();
 	}

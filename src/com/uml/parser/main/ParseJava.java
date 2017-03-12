@@ -2,7 +2,6 @@ package com.uml.parser.main;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.uml.parser.model.UMLClass;
@@ -21,15 +20,13 @@ import japa.parser.ast.body.TypeDeclaration;
 import japa.parser.ast.body.VariableDeclarator;
 
 public class ParseJava {
-	private List<UMLClass> umlClasses;
 	private Counselor counselor;
 	
 	public ParseJava() {
-		umlClasses = new ArrayList<>();
 		counselor = Counselor.getInstance();
 	}
 	
-	public List<UMLClass> parseFiles(List<File> files){
+	public void parseFiles(List<File> files){
 		try{
 			for(File file : files){
 				System.out.println(file.getAbsolutePath());
@@ -43,17 +40,15 @@ public class ParseJava {
 		}catch(ParseException ex){
 			System.err.println("Error: Parse exception. Trace: "+ ex.getStackTrace());
 		}
-		
-		return umlClasses;
 	}
 	
 	private void createElements(CompilationUnit compliationUnit){
 		List<TypeDeclaration> types = compliationUnit.getTypes();
 		for(TypeDeclaration type : types){
-			UMLClass umlClass = new UMLClass();
 			List<BodyDeclaration> bodyDeclarations = type.getMembers();
 			boolean isInterface = ((ClassOrInterfaceDeclaration) type).isInterface();
-			umlClass.setName(type.getName());
+			
+			UMLClass umlClass = counselor.getUMLClass(type.getName());
 			umlClass.setInterface(isInterface);
 			System.out.println("Name "+ umlClass.getName());
 			
@@ -68,7 +63,7 @@ public class ParseJava {
 					createUMLMethods(umlClass, (ConstructorDeclaration) body, true);
 				}
 			}
-			umlClasses.add(umlClass);
+			counselor.addUMLClass(umlClass);
 		}
 	}
 	

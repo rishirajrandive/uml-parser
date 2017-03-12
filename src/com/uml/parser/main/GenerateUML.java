@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import com.uml.parser.enums.RelationType;
 import com.uml.parser.model.Relationship;
 import com.uml.parser.model.UMLClass;
 import com.uml.parser.model.UMLMethod;
@@ -18,9 +19,9 @@ public class GenerateUML {
 	private List<UMLClass> umlClasses;
 	private Counselor counselor;
 	
-	public GenerateUML(List<UMLClass> umlClasses) {
-		this.umlClasses = umlClasses;
+	public GenerateUML() {
 		counselor = Counselor.getInstance();
+		umlClasses = counselor.getUMLClasses();
 	}
 	
 	public void generateUML(String outputFileName){
@@ -67,7 +68,11 @@ public class GenerateUML {
 		}
 		
 		for(Relationship relationship : counselor.getRelationships()){
-			umlSource.append(relationship.getUMLString());
+			if(relationship.getType() == RelationType.DEPENDENCY && isInterfaceDependency(relationship)){
+				umlSource.append(relationship.getUMLString());
+			}else if(relationship.getType() != RelationType.DEPENDENCY){
+				umlSource.append(relationship.getUMLString());
+			}
 		}
 		
 		umlSource.append("@enduml");
@@ -91,5 +96,14 @@ public class GenerateUML {
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	private boolean isInterfaceDependency(Relationship relationship){
+		UMLClass child = relationship.getChild();
+		UMLClass parent = relationship.getParent();
+		if(child.isInterface() && !parent.isInterface()){
+			return true;
+		}
+		return false;
 	}
 }

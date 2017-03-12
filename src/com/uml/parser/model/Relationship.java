@@ -3,8 +3,8 @@ import com.uml.parser.enums.RelationType;
 
 public class Relationship {
 
-	private String parent;
-	private String child;
+	private UMLClass parent;
+	private UMLClass child;
 	private RelationType type;
 	private String parentCardinality;
 	private String childCardinality;
@@ -17,25 +17,25 @@ public class Relationship {
 	/**
 	 * @return the parent
 	 */
-	public String getParent() {
+	public UMLClass getParent() {
 		return parent;
 	}
 	/**
 	 * @param parent the parent to set
 	 */
-	public void setParent(String parent) {
+	public void setParent(UMLClass parent) {
 		this.parent = parent;
 	}
 	/**
 	 * @return the child
 	 */
-	public String getChild() {
+	public UMLClass getChild() {
 		return child;
 	}
 	/**
 	 * @param child the child to set
 	 */
-	public void setChild(String child) {
+	public void setChild(UMLClass child) {
 		this.child = child;
 	}
 	/**
@@ -77,8 +77,8 @@ public class Relationship {
 	
 	public String getUMLString(){
 		if(parentCardinality != null && childCardinality != null){
-			return (parent + "\"" + parentCardinality + "\"" + type.getSymbol() + "\"" + childCardinality + "\"" + child + "\n\n");
+			return (parent.getName() + "\"" + parentCardinality + "\"" + type.getSymbol() + "\"" + childCardinality + "\"" + child.getName() + "\n\n");
 		}
-		return (parent + type.getSymbol() + child + "\n\n");
+		return (parent.getName() + type.getSymbol() + child.getName() + "\n\n");
 	}
 }

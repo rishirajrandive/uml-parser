@@ -64,4 +64,9 @@ public class UMLHelper {
 		}
 		return typeStr;
 	}
+	
+	public static boolean isInterface(Type type){
+		
+		return false;
+	}
 }
