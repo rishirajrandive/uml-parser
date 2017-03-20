@@ -18,6 +18,11 @@ import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.TypeDeclaration;
 import japa.parser.ast.body.VariableDeclarator;
+import japa.parser.ast.expr.Expression;
+import japa.parser.ast.expr.VariableDeclarationExpr;
+import japa.parser.ast.stmt.BlockStmt;
+import japa.parser.ast.stmt.ExpressionStmt;
+import japa.parser.ast.stmt.Statement;
 
 public class ParseJava {
 	private Counselor counselor;
@@ -89,6 +94,8 @@ public class ParseJava {
 			umlMethod.setModifier(constructor.getModifiers());
 			umlMethod.setName(constructor.getName());
 			umlMethod.setParameters(constructor.getParameters());
+			
+			parseMethodBody(umlClass, constructor.getBlock());
 		}else {
 			MethodDeclaration method = (MethodDeclaration) body;
 			umlMethod.setConstructor(false);
@@ -96,8 +103,22 @@ public class ParseJava {
 			umlMethod.setName(method.getName());
 			umlMethod.setParameters(method.getParameters());
 			umlMethod.setType(method.getType());
+			
+			parseMethodBody(umlClass, method.getBody());
 		}
 		umlClass.getUMLMethods().add(umlMethod);
-		counselor.checkForRelatives(umlClass, umlMethod);
+		counselor.checkForRelatives(umlClass, umlMethod);		
+	}
+	
+	private void parseMethodBody(UMLClass umlClass, BlockStmt methodBody){
+		if(methodBody == null){
+			return;
+		}
+		List<Statement> methodStmts = methodBody.getStmts();
+		for(Statement statement : methodStmts){
+			if(statement instanceof ExpressionStmt && ((ExpressionStmt) statement).getExpression() instanceof VariableDeclarationExpr){
+				VariableDeclarationExpr expression = (VariableDeclarationExpr) (((ExpressionStmt) statement).getExpression());
+			}
+		}
 	}
 }

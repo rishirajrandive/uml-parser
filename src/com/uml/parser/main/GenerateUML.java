@@ -16,18 +16,16 @@ import net.sourceforge.plantuml.SourceStringReader;
 
 public class GenerateUML {
 
-	private List<UMLClass> umlClasses;
 	private Counselor counselor;
 	
 	public GenerateUML() {
 		counselor = Counselor.getInstance();
-		umlClasses = counselor.getUMLClasses();
 	}
 	
 	public void generateUML(String outputFileName){
 		StringBuilder umlSource = new StringBuilder();
 		umlSource.append("@startuml\nskinparam classAttributeIconSize 0\n");
-		for(UMLClass umlClass : umlClasses){
+		for(UMLClass umlClass : counselor.getUMLClasses()){
 			if(umlClass.isInterface()){
 				umlSource.append("interface " + umlClass.getName() + " << interface >> {\n");
 			}else {
@@ -101,7 +99,7 @@ public class GenerateUML {
 	private boolean isInterfaceDependency(Relationship relationship){
 		UMLClass child = relationship.getChild();
 		UMLClass parent = relationship.getParent();
-		if(child.isInterface() && !parent.isInterface()){
+		if((child.isInterface() && !parent.isInterface()) || (!child.isInterface()) && parent.isInterface()){
 			return true;
 		}
 		return false;

@@ -12,6 +12,7 @@ import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.Parameter;
 import japa.parser.ast.body.TypeDeclaration;
+import japa.parser.ast.expr.VariableDeclarationExpr;
 import japa.parser.ast.type.ClassOrInterfaceType;
 import japa.parser.ast.type.Type;
 
@@ -67,6 +68,16 @@ public class Counselor {
 			createRelationship(umlClass, fieldType, RelationType.ASSOCIATION);
 		}
 	}
+	
+//	public void checkForRelatives(UMLClass umlClass, VariableDeclarationExpr variableDeclarationExpr){
+//		Type variableType = variableDeclarationExpr.getType();
+//		if(UMLHelper.isUMLClassArray(variableType)){
+//			String umlClassName = UMLHelper.getArrayClassName(variableType);
+//		}
+//		if(UMLHelper.isUMLClassType(variableType)){	
+//			createRelationship(umlClass, variableType, RelationType.ASSOCIATION);
+//		}
+//	}
 	
 	public void createRelationship(UMLClass umlClass, Type relative, RelationType relationType){
 		Relationship relationship = new Relationship();
@@ -137,6 +148,7 @@ public class Counselor {
 		}
 		UMLClass newUMLClass = new UMLClass();
 		newUMLClass.setName(name);
+		umlClasses.add(newUMLClass);
 		return newUMLClass;
 	}
 	
