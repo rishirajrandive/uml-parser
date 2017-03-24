@@ -2,6 +2,11 @@ package com.uml.parser.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Model representing each class provided.
+ * @author rishi
+ *
+ */
 public class UMLClass {
 
 	private List<UMLVariable> umlVariables;
@@ -10,6 +15,9 @@ public class UMLClass {
 	private boolean isInterface;
 	private String name;
 	
+	/**
+	 * Constructor for initializing the variables
+	 */
 	public UMLClass() {
 		name = "";
 		isInterface = false;

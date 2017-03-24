@@ -18,25 +18,38 @@ import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.TypeDeclaration;
 import japa.parser.ast.body.VariableDeclarator;
-import japa.parser.ast.expr.Expression;
 import japa.parser.ast.expr.VariableDeclarationExpr;
 import japa.parser.ast.stmt.BlockStmt;
 import japa.parser.ast.stmt.ExpressionStmt;
 import japa.parser.ast.stmt.Statement;
 
+/**
+ * Parses Java classes to create {@link UMLClass} for each input class.
+ * Deals with variables, constructors and methods.
+ * Also, calls {@link Counselor} for creating relationships if any
+ * @author rishi
+ *
+ */
 public class ParseJava {
 	private Counselor counselor;
 	
+	/**
+	 * Constructor for class
+	 */
 	public ParseJava() {
 		counselor = Counselor.getInstance();
 	}
 	
+	/**
+	 * Parsing begins here for each input file
+	 * @param files
+	 */
 	public void parseFiles(List<File> files){
 		try{
 			for(File file : files){
 				System.out.println(file.getAbsolutePath());
 				CompilationUnit compliationUnit = JavaParser.parse(file);
-				createElements(compliationUnit);
+				createUMLClass(compliationUnit);
 			}
 		}catch(FileNotFoundException ex){
 			System.err.println("Error: File not found. Trace: "+ ex.getMessage());
@@ -47,7 +60,11 @@ public class ParseJava {
 		}
 	}
 	
-	private void createElements(CompilationUnit compliationUnit){
+	/**
+	 * Creates {@link UMLClass} for input Java Class.
+	 * @param compliationUnit
+	 */
+	private void createUMLClass(CompilationUnit compliationUnit){
 		List<TypeDeclaration> types = compliationUnit.getTypes();
 		for(TypeDeclaration type : types){
 			List<BodyDeclaration> bodyDeclarations = type.getMembers();
@@ -72,6 +89,11 @@ public class ParseJava {
 		}
 	}
 	
+	/**
+	 * All instance variables are parsed here
+	 * @param umlClass
+	 * @param field
+	 */
 	private void createUMLVariables(UMLClass umlClass, FieldDeclaration field){
 		List<VariableDeclarator> variables = field.getVariables();
 		for(VariableDeclarator variable : variables){
@@ -82,10 +104,16 @@ public class ParseJava {
 			umlVariable.setUMLClassType(UMLHelper.isUMLClassType(field.getType()));
 			umlVariable.setType(field.getType());
 			umlClass.getUMLVariables().add(umlVariable);
+			counselor.checkForRelatives(umlClass, umlVariable);
 		}
-		counselor.checkForRelatives(umlClass, field);
 	}
 	
+	/**
+	 * All the methods including constructors are parsed here
+	 * @param umlClass
+	 * @param body
+	 * @param isConstructor
+	 */
 	private void createUMLMethods(UMLClass umlClass, BodyDeclaration body, boolean isConstructor){
 		UMLMethod umlMethod = new UMLMethod();
 		if(isConstructor){
@@ -110,14 +138,20 @@ public class ParseJava {
 		counselor.checkForRelatives(umlClass, umlMethod);		
 	}
 	
+	/**
+	 * Method body parsing
+	 * @param umlClass
+	 * @param methodBody
+	 */
 	private void parseMethodBody(UMLClass umlClass, BlockStmt methodBody){
-		if(methodBody == null){
+		if(methodBody == null || methodBody.getStmts() == null){
 			return;
 		}
 		List<Statement> methodStmts = methodBody.getStmts();
 		for(Statement statement : methodStmts){
 			if(statement instanceof ExpressionStmt && ((ExpressionStmt) statement).getExpression() instanceof VariableDeclarationExpr){
 				VariableDeclarationExpr expression = (VariableDeclarationExpr) (((ExpressionStmt) statement).getExpression());
+				counselor.checkForRelatives(umlClass, expression);
 			}
 		}
 	}

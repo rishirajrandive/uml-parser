@@ -1,5 +1,10 @@
 package com.uml.parser.enums;
 
+/**
+ * Has all the possible relation types
+ * @author rishi
+ *
+ */
 public enum RelationType {
 	// When a class is dependent on another class for its existence or implementation.
 	// Example: When a class has object of another passed in a method as parameter.
@@ -24,10 +29,19 @@ public enum RelationType {
 	REALIZATION("..|>"); // When implements is used
 	
 	private String symbol;
+	
+	/**
+	 * Constructor assigning symbol for relation type 
+	 * @param symbol
+	 */
 	private RelationType(String symbol) {
 		this.symbol = symbol;
 	}
 	
+	/**
+	 * Returns symbol to be used in grammar for relation type
+	 * @return
+	 */
 	public String getSymbol(){
 		return this.symbol;
 	}

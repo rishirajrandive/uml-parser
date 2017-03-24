@@ -8,6 +8,11 @@ import japa.parser.ast.type.Type;
 
 import japa.parser.ast.body.Parameter;
 
+/**
+ * Model representing methods in the classes
+ * @author rishi
+ *
+ */
 public class UMLMethod {
 
 	private String name;

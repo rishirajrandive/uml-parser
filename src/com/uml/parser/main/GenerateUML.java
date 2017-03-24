@@ -14,15 +14,28 @@ import com.uml.parser.model.UMLVariable;
 
 import net.sourceforge.plantuml.SourceStringReader;
 
+/**
+ * Generates the UML based on the {@link UMLClass} and {@link Relationship}
+ * provided by {@link Counselor}
+ * @author rishi
+ *
+ */
 public class GenerateUML {
 
 	private Counselor counselor;
 	
+	/**
+	 * Constructor fetches instance of {@link Counselor}
+	 */
 	public GenerateUML() {
 		counselor = Counselor.getInstance();
 	}
 	
-	public void generateUML(String outputFileName){
+	/**
+	 * Generation of UML for class diagram is done by writing the grammar
+	 * @param outputFileName
+	 */
+	public void createGrammar(String outputFileName){
 		StringBuilder umlSource = new StringBuilder();
 		umlSource.append("@startuml\nskinparam classAttributeIconSize 0\n");
 		for(UMLClass umlClass : counselor.getUMLClasses()){
@@ -66,7 +79,7 @@ public class GenerateUML {
 		}
 		
 		for(Relationship relationship : counselor.getRelationships()){
-			if(relationship.getType() == RelationType.DEPENDENCY && isInterfaceDependency(relationship)){
+			if(relationship.getType() == RelationType.DEPENDENCY && UMLHelper.isInterfaceDependency(relationship)){
 				umlSource.append(relationship.getUMLString());
 			}else if(relationship.getType() != RelationType.DEPENDENCY){
 				umlSource.append(relationship.getUMLString());
@@ -76,6 +89,15 @@ public class GenerateUML {
 		umlSource.append("@enduml");
 		System.out.println(umlSource.toString());
 		
+		generateUML(outputFileName, umlSource.toString());
+	}
+	
+	/**
+	 * Actually generates the PNG with provided output file name
+	 * @param outputFileName
+	 * @param umlSource
+	 */
+	private void generateUML(String outputFileName, String umlSource){
 		OutputStream png = null;
 		try 
 		{
@@ -85,7 +107,7 @@ public class GenerateUML {
 		{
 			e1.printStackTrace();
 		}
-		SourceStringReader reader = new SourceStringReader(umlSource.toString());
+		SourceStringReader reader = new SourceStringReader(umlSource);
 		try 
 		{
 			reader.generateImage(png);
@@ -94,14 +116,5 @@ public class GenerateUML {
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	private boolean isInterfaceDependency(Relationship relationship){
-		UMLClass child = relationship.getChild();
-		UMLClass parent = relationship.getParent();
-		if((child.isInterface() && !parent.isInterface()) || (!child.isInterface()) && parent.isInterface()){
-			return true;
-		}
-		return false;
 	}
 }

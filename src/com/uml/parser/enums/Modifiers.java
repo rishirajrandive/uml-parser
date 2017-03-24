@@ -1,5 +1,11 @@
 package com.uml.parser.enums;
 
+/**
+ * Defines all the possible modifiers and their symbols to be used
+ * in the grammar
+ * @author rishi
+ *
+ */
 public enum Modifiers {
 
 	PRIVATE(2, "-"),
@@ -10,19 +16,21 @@ public enum Modifiers {
 	private int modifier;
 	private String symbol;
 	
+	/**
+	 * Initializes the modifiers with number and symobol for it 
+	 * @param modifier
+	 * @param symbol
+	 */
 	private Modifiers(int modifier, String symbol) {
 		this.modifier = modifier;
 		this.symbol = symbol;
 	}
 	
-	public int getModifier(){
-		return this.modifier;
-	}
-	
-	public String getSymbol(){
-		return this.symbol;
-	}
-	
+	/**
+	 * Returns value for modifier
+	 * @param modifier
+	 * @return
+	 */
 	public static String valueOf(int modifier){
 		for(Modifiers mod : Modifiers.values()){
 			if(mod.modifier == modifier){

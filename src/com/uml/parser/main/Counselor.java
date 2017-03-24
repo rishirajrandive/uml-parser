@@ -7,6 +7,7 @@ import com.uml.parser.enums.RelationType;
 import com.uml.parser.model.Relationship;
 import com.uml.parser.model.UMLClass;
 import com.uml.parser.model.UMLMethod;
+import com.uml.parser.model.UMLVariable;
 
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.FieldDeclaration;
@@ -16,12 +17,23 @@ import japa.parser.ast.expr.VariableDeclarationExpr;
 import japa.parser.ast.type.ClassOrInterfaceType;
 import japa.parser.ast.type.Type;
 
+/**
+ * Deals with creating relationships between {@link UMLClass} by using the 
+ * relations defined in {@link RelationType}
+ * Maintains data for all the {@link UMLClass} and their {@link Relationship}
+ * @author rishi
+ *
+ */
 public class Counselor {
 	
 	private static Counselor counselor;
 	private List<Relationship> relationships;
 	private List<UMLClass> umlClasses;
 	
+	/**
+	 * Returns the instance for singleton class
+	 * @return
+	 */
 	public static Counselor getInstance(){
 		if(counselor == null){
 			counselor = new Counselor();
@@ -29,11 +41,21 @@ public class Counselor {
 		return counselor;
 	}
 	
+	/**
+	 * Private constructor to implement singleton class
+	 */
 	private Counselor() {
 		relationships = new ArrayList<>();
 		umlClasses = new ArrayList<>();
 	}
 
+	/**
+	 * Check relationship between extended classes or implemented interfaces for given
+	 * {@link UMLClass}
+	 * 
+	 * @param umlClass
+	 * @param type
+	 */
 	public void checkForRelatives(UMLClass umlClass, TypeDeclaration type){
 		ClassOrInterfaceDeclaration classOrInterfaceDeclaration = (ClassOrInterfaceDeclaration) type;
 		if(classOrInterfaceDeclaration.getExtends() != null){
@@ -51,6 +73,11 @@ public class Counselor {
 		}
 	}
 	
+	/**
+	 * Checks for dependency relationship, if object of other class is used in method parameters. 
+	 * @param umlClass
+	 * @param method
+	 */
 	public void checkForRelatives(UMLClass umlClass, UMLMethod method){
 		if(method.getParameters() != null){
 			List<Parameter> parameters = method.getParameters();
@@ -62,30 +89,39 @@ public class Counselor {
 		}
 	}
 	
-	public void checkForRelatives(UMLClass umlClass, FieldDeclaration field){
-		Type fieldType = field.getType();
-		if(UMLHelper.isUMLClassType(fieldType)){	
-			createRelationship(umlClass, fieldType, RelationType.ASSOCIATION);
+	/**
+	 * Checks relationships for instance variables declared for class.
+	 * @param umlClass
+	 * @param field
+	 */
+	public void checkForRelatives(UMLClass umlClass, UMLVariable field){
+		if(field.isUMLClassType()){	
+			createRelationship(umlClass, field.getType(), RelationType.ASSOCIATION);
 		}
 	}
 	
-//	public void checkForRelatives(UMLClass umlClass, VariableDeclarationExpr variableDeclarationExpr){
-//		Type variableType = variableDeclarationExpr.getType();
-//		if(UMLHelper.isUMLClassArray(variableType)){
-//			String umlClassName = UMLHelper.getArrayClassName(variableType);
-//		}
-//		if(UMLHelper.isUMLClassType(variableType)){	
-//			createRelationship(umlClass, variableType, RelationType.ASSOCIATION);
-//		}
-//	}
+	public void checkForRelatives(UMLClass umlClass, VariableDeclarationExpr variableDeclarationExpr){
+		Type variableType = variableDeclarationExpr.getType();
+		if(UMLHelper.isUMLClassType(variableType)){
+			createRelationship(umlClass, variableType, RelationType.DEPENDENCY);
+		}
+	}
 	
+	/**
+	 * If there is a relationship they are created here. 
+	 * @param umlClass
+	 * @param relative
+	 * @param relationType
+	 */
 	public void createRelationship(UMLClass umlClass, Type relative, RelationType relationType){
 		Relationship relationship = new Relationship();
 		relationship.setType(relationType);
-		if(relationType == RelationType.ASSOCIATION && UMLHelper.isUMLClassArray(relative)){
-			relationship.setParentCardinality("1");
-			relationship.setChildCardinality("0..*");
+		if(UMLHelper.isUMLClassArray(relative)){
 			relationship.setChild(counselor.getUMLClass(UMLHelper.getArrayClassName(relative)));
+			if(relationType == RelationType.ASSOCIATION){
+				relationship.setParentCardinality("1");
+				relationship.setChildCardinality("0..*");
+			}
 		}else {
 			relationship.setChild(counselor.getUMLClass(relative.toString()));
 		}
@@ -100,6 +136,7 @@ public class Counselor {
 	
 	
 	/**
+	 * Returns all the relationship
 	 * @return the relationships
 	 */
 	public List<Relationship> getRelationships() {
@@ -107,12 +144,17 @@ public class Counselor {
 	}
 
 	/**
+	 * Setter for setting relationships
 	 * @param relationships the relationships to set
 	 */
 	public void setRelationships(List<Relationship> relationships) {
 		this.relationships = relationships;
 	}
 
+	/**
+	 * Adds {@link Relationship} by checking if its already present or not
+	 * @param newRelation
+	 */
 	private void addRelation(Relationship newRelation){
 		if(relationships.size() > 0){
 			for(Relationship oldRelation : relationships){
@@ -130,16 +172,29 @@ public class Counselor {
 		relationships.add(newRelation);
 	}
 	
+	/**
+	 * Adds {@link UMLClass}
+	 * @param newUMLClass
+	 */
 	public void addUMLClass(UMLClass newUMLClass){
 		if(!hasUMLClass(newUMLClass)){
 			umlClasses.add(newUMLClass);
 		}
 	}
 	
+	/**
+	 * Returns all the {@link UMLClass}
+	 * @return
+	 */
 	public List<UMLClass> getUMLClasses(){
 		return umlClasses;
 	}
 	
+	/**
+	 * Returns {@link UMLClass} for given name
+	 * @param name
+	 * @return
+	 */
 	public UMLClass getUMLClass(String name){
 		for(UMLClass umlClass : umlClasses){
 			if(umlClass.getName().equalsIgnoreCase(name)){
@@ -152,6 +207,11 @@ public class Counselor {
 		return newUMLClass;
 	}
 	
+	/**
+	 * Checks if {@link UMLClass} is already present with {@link Counselor}
+	 * @param newUMLClass
+	 * @return
+	 */
 	public boolean hasUMLClass(UMLClass newUMLClass){
 		for(UMLClass umlClass : umlClasses){
 			if(umlClass.getName().equalsIgnoreCase(newUMLClass.getName())){

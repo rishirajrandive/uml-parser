@@ -3,6 +3,11 @@ import com.uml.parser.enums.Modifiers;
 
 import japa.parser.ast.type.Type;
 
+/**
+ * Model representing variables in classes
+ * @author rishi
+ *
+ */
 public class UMLVariable {
 
 	private int modifier;

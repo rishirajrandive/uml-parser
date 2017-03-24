@@ -1,6 +1,11 @@
 package com.uml.parser.model;
 import com.uml.parser.enums.RelationType;
 
+/**
+ * Model for relationships between all the classes.
+ * @author rishi
+ *
+ */
 public class Relationship {
 
 	private UMLClass parent;
@@ -9,6 +14,9 @@ public class Relationship {
 	private String parentCardinality;
 	private String childCardinality;
 	
+	/**
+	 * Contructor for the relationship
+	 */
 	public Relationship() {
 		parentCardinality = null;
 		childCardinality = null;
