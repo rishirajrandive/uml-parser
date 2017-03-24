@@ -105,6 +105,11 @@ public class UMLHelper {
 		return false;
 	}
 	
+	/**
+	 * Returns true if the class name is not one of the Java core classes
+	 * @param typeStr
+	 * @return
+	 */
 	private static boolean isValidUMLClass(String typeStr){
 		if(typeStr.equalsIgnoreCase("") || typeStr.equalsIgnoreCase("Double") || typeStr.equalsIgnoreCase("Float") || 
 				typeStr.equalsIgnoreCase("Long") || typeStr.equalsIgnoreCase("Integer") || 

@@ -10,7 +10,6 @@ import com.uml.parser.model.UMLMethod;
 import com.uml.parser.model.UMLVariable;
 
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
-import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.Parameter;
 import japa.parser.ast.body.TypeDeclaration;
 import japa.parser.ast.expr.VariableDeclarationExpr;
@@ -100,6 +99,11 @@ public class Counselor {
 		}
 	}
 	
+	/**
+	 * Checks for relatives in the method body
+	 * @param umlClass
+	 * @param variableDeclarationExpr
+	 */
 	public void checkForRelatives(UMLClass umlClass, VariableDeclarationExpr variableDeclarationExpr){
 		Type variableType = variableDeclarationExpr.getType();
 		if(UMLHelper.isUMLClassType(variableType)){
