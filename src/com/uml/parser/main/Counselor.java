@@ -78,6 +78,7 @@ public class Counselor {
 	 * @param method
 	 */
 	public void checkForRelatives(UMLClass umlClass, UMLMethod method){
+		//FIXME Remove methods which are overridden and are part of interface
 		if(method.getParameters() != null){
 			List<Parameter> parameters = method.getParameters();
 			for(Parameter parameter : parameters){
@@ -94,6 +95,7 @@ public class Counselor {
 	 * @param field
 	 */
 	public void checkForRelatives(UMLClass umlClass, UMLVariable field){
+		//FIXME If Object is involved in association, no need to show it as attribute
 		if(field.isUMLClassType()){	
 			createRelationship(umlClass, field.getType(), RelationType.ASSOCIATION);
 		}

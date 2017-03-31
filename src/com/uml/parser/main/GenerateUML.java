@@ -55,6 +55,7 @@ public class GenerateUML {
 			String setVariable = "";
 			String getVariable = "";
 			UMLMethod setterMethod = null;
+			//FIXME No need to show the method for get and set, just make the variable public
 			List<UMLMethod> methods = umlClass.getUMLMethods();
 			for(UMLMethod method : methods){
 				if(method.isConstructor()){
