@@ -95,7 +95,6 @@ public class ParseJava {
 	 * @param field
 	 */
 	private void createUMLVariables(UMLClass umlClass, FieldDeclaration field){
-		//FIXME Ignore protected variables
 		List<VariableDeclarator> variables = field.getVariables();
 		for(VariableDeclarator variable : variables){
 			UMLVariable umlVariable = new UMLVariable();

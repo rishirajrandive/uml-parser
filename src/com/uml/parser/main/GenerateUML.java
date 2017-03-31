@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import com.uml.parser.enums.Modifiers;
 import com.uml.parser.enums.RelationType;
 import com.uml.parser.model.Relationship;
 import com.uml.parser.model.UMLClass;
@@ -47,7 +48,10 @@ public class GenerateUML {
 			
 			List<UMLVariable> variables = umlClass.getUMLVariables();
 			for(UMLVariable variable : variables){
-				umlSource.append(variable.getUMLString());
+				if(variable.getModifier() != Modifiers.PROTECTED.modifier && variable.getModifier() != Modifiers.PACKAGE.modifier && 
+						!variable.isUMLClassType()){
+					umlSource.append(variable.getUMLString());
+				}
 			}
 			
 			boolean hasSetter = false;
@@ -55,7 +59,9 @@ public class GenerateUML {
 			String setVariable = "";
 			String getVariable = "";
 			UMLMethod setterMethod = null;
+			//FIXME For #5 main has no args shown
 			//FIXME No need to show the method for get and set, just make the variable public
+			//For test case #3 and #4, conflict in #4 get and set methods are shown
 			List<UMLMethod> methods = umlClass.getUMLMethods();
 			for(UMLMethod method : methods){
 				if(method.isConstructor()){
@@ -68,7 +74,7 @@ public class GenerateUML {
 					hasGetter = true;
 					getVariable = method.getName().split("get")[1];
 					umlSource.append(method.getUMLString());
-				}else {
+				}else if(method.getModifier() == Modifiers.PUBLIC.modifier){
 					umlSource.append(method.getUMLString());
 				}
 			}

@@ -13,8 +13,8 @@ public enum Modifiers {
 	PUBLIC(1, "+"),
 	PACKAGE(0, "~");
 	
-	private int modifier;
-	private String symbol;
+	public int modifier;
+	public String symbol;
 	
 	/**
 	 * Initializes the modifiers with number and symobol for it 
@@ -38,5 +38,14 @@ public enum Modifiers {
 			}
 		}
 		return "";
+	}
+	
+	public static int getModifier(Modifiers modifier){
+		for(Modifiers mod : Modifiers.values()){
+			if(mod.modifier == modifier.modifier){
+				return mod.modifier;
+			}
+		}
+		return -1;
 	}
 }
