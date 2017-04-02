@@ -55,7 +55,7 @@ public class GenerateUML {
 			}
 			
 			boolean hasSetter = false;
-			boolean hasGetter = true;
+			boolean hasGetter = false;
 			String setVariable = "";
 			String getVariable = "";
 			UMLMethod setterMethod = null;
