@@ -74,8 +74,8 @@ public class GenerateUML {
 					hasGetter = true;
 					getVariable = method.getName().split("get")[1];
 					umlSource.append(method.getUMLString());
-				}else if(method.getModifier() == Modifiers.PUBLIC.modifier){
-					umlSource.append(method.getUMLString());
+				}else if(method.getModifier() == Modifiers.PUBLIC.modifier || method.getModifier() == Modifiers.PUBLIC_STATIC.modifier){
+					umlSource.append(method.getParameterizedUMLString());
 				}
 			}
 			if(hasGetter && hasSetter && setVariable.equalsIgnoreCase(getVariable) && setterMethod != null){

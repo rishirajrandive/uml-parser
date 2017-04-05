@@ -98,15 +98,16 @@ public class UMLMethod {
 				umlStr.append(parameters.get(i).getId().getName() + ": " + parameters.get(i).getType());
 			}
 			// TODO Make sure more than one parameters could be added
-			umlStr.append(") \n");
+			umlStr.append(")");
 		}else {
-			return (Modifiers.valueOf(modifier) + name + "() \n");
+			umlStr.append(Modifiers.valueOf(modifier) + name + "()");
 		}
-		return umlStr.toString();
+		
+		return (type != null) ? umlStr.append(": " + type + "\n").toString() : umlStr.append(" \n").toString();
 	}
 	
 	public String getUMLString(){
-		return (Modifiers.valueOf(modifier) + name + "(): " + type + "\n");
+		return (type != null) ? (Modifiers.valueOf(modifier) + name + "(): " + type + "\n") : (Modifiers.valueOf(modifier) + name + "()");
 	}
 	
 }
