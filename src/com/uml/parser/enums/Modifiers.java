@@ -18,6 +18,7 @@ public enum Modifiers {
 	
 	PUBLIC(1, "+"),
 	PUBLIC_STATIC(9, "{static}"),
+	PUBLIC_ABSTRACT(1025, "+"),
 	//PUBLIC_FINAL_STATIC(25, ""),
 	
 	PACKAGE(0, "~"),

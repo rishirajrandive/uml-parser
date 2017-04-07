@@ -74,7 +74,7 @@ public class GenerateUML {
 					hasGetter = true;
 					getVariable = method.getName().split("get")[1];
 					umlSource.append(method.getUMLString());
-				}else if(method.getModifier() == Modifiers.PUBLIC.modifier || method.getModifier() == Modifiers.PUBLIC_STATIC.modifier){
+				}else if(isMethodPublic(method)){
 					umlSource.append(method.getParameterizedUMLString());
 				}
 			}
@@ -123,5 +123,14 @@ public class GenerateUML {
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	
+	private boolean isMethodPublic(UMLMethod method){
+		if(method.getModifier() == Modifiers.PUBLIC.modifier || method.getModifier() == Modifiers.PUBLIC_STATIC.modifier ||
+				method.getModifier() == Modifiers.PUBLIC_ABSTRACT.modifier){
+			return true;
+		}
+		return false;
 	}
 }
