@@ -46,20 +46,13 @@ public class GenerateUML {
 				umlSource.append("class " + umlClass.getName() + " {\n");
 			}
 			
-			List<UMLVariable> variables = umlClass.getUMLVariables();
-			for(UMLVariable variable : variables){
-				if(variable.getModifier() != Modifiers.PROTECTED.modifier && variable.getModifier() != Modifiers.PACKAGE.modifier && 
-						!variable.isUMLClassType()){
-					umlSource.append(variable.getUMLString());
-				}
-			}
+			
 			
 			boolean hasSetter = false;
 			boolean hasGetter = false;
 			String setVariable = "";
 			String getVariable = "";
 			UMLMethod setterMethod = null;
-			//FIXME For #5 main has no args shown
 			//FIXME No need to show the method for get and set, just make the variable public
 			//For test case #3 and #4, conflict in #4 get and set methods are shown
 			List<UMLMethod> methods = umlClass.getUMLMethods();
@@ -79,10 +72,18 @@ public class GenerateUML {
 				}
 			}
 			if(hasGetter && hasSetter && setVariable.equalsIgnoreCase(getVariable) && setterMethod != null){
-				umlSource.append(setterMethod.getParameterizedUMLString());
+				//umlSource.append(setterMethod.getParameterizedUMLString());
+				
 			}
-			
 			umlSource.append("}\n\n");
+			
+			List<UMLVariable> variables = umlClass.getUMLVariables();
+			for(UMLVariable variable : variables){
+				if(variable.getModifier() != Modifiers.PROTECTED.modifier && variable.getModifier() != Modifiers.PACKAGE.modifier && 
+						!variable.isUMLClassType()){
+					umlSource.append(variable.getUMLString());
+				}
+			}
 		}
 		
 		for(Relationship relationship : counselor.getRelationships()){
