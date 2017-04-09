@@ -1,4 +1,3 @@
-package com.uml.parser.aop;
 
 public class AOPDemo {
 
