@@ -16,3 +16,6 @@ hs_err_pid*
 .classpath
 .project
 .DS_Store
+
+# For Jekyll site
+_site/
