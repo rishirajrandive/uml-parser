@@ -7,6 +7,7 @@ import org.aspectj.lang.reflect.Pointcut;
 public aspect SequenceGen {
 
 	private int callDepth;
+	private StringBuffer plantUmlString = new StringBuffer();
 
 	//pointcut traced() : !within(TracingAspect) && execution(public * *.*(..)) ;
 	//pointcut traced() : !within(SequenceGen) && execution(* *.*(..)) ;
@@ -19,22 +20,29 @@ public aspect SequenceGen {
 
 	after() : traced() {
 		callDepth--;
-		//print("After", thisJoinPoint);
+		print("After", thisJoinPoint);
 	}
 
 	private void print(String prefix, JoinPoint m) {
-		for (int i = 0; i < callDepth; i++) {
-			System.out.print(".");
-		} 
-		
-		System.out.print(prefix + ": " + m.toString() + " " + m.getSignature() );
-		System.out.print( " args : [ " ) ;
-		for (Object obj : m.getArgs())
-		{
-			System.out.print( obj + " " ) ;
+
+		if(callDepth % 2 == 0){
+			plantUmlString.append(m.getSignature().getDeclaringTypeName() + "\n");
+		}else {
+			plantUmlString.append(m.getSignature().getDeclaringTypeName() + "->");
 		}
-		System.out.println("]") ;
+//		System.out.print(m.getSignature() + "   " + m.getSignature().getName() + "     " + m.getSignature().getDeclaringTypeName());
+//		
+//		
+//		System.out.print( " args : [ " ) ;
+//		for (Object obj : m.getArgs())
+//		{
+//			System.out.print( obj + " " ) ;
+//		}
+//		System.out.println("]") ;
+		System.out.println(plantUmlString);
 	}
+	
+	
 	
 	
 }
