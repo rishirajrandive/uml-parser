@@ -9,3 +9,4 @@ Following are the tools/libraries used in this project:
 2. **[PlantUML](http://plantuml.com/)**: UML diagrams can be generated using simple and intuitive language used by PlantUML. 
 
 3. **[GraphViz](http://plantuml.com/graphviz-dot)**: Works with PlantUML to generate diagrams
+3. **[AspectJ](https://eclipse.org/aspectj/doc/next/progguide/starting.html)**: Using AspectJ to parse the Java code and then create relevant grammar for PlantUML to generate the UML Sequence Diagram.
