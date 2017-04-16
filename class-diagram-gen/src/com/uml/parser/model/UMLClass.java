@@ -100,4 +100,13 @@ public class UMLClass {
 		this.parents.add(parent);
 	}
 	
+	public boolean hasVariable(String variable){
+		for(UMLVariable var : umlVariables){
+			if(var.getName().equalsIgnoreCase(variable)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

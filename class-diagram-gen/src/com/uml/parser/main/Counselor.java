@@ -253,13 +253,11 @@ public class Counselor {
 			if(relationship.getType() == RelationType.GENERALIZATION || relationship.getType() == RelationType.REALIZATION){
 				UMLClass parent = relationship.getParent();
 				UMLClass child = relationship.getChild();
-				List<UMLMethod> newChildMethods = new ArrayList<>();
+				List<UMLMethod> newChildMethods = child.getUMLMethods();
 				
 				for(UMLMethod parentMethod : parent.getUMLMethods()){
-					for(UMLMethod childMethod : child.getUMLMethods()){
-						if(!parentMethod.getName().equalsIgnoreCase(childMethod.getName())){
-							newChildMethods.add(childMethod);
-						}
+					if(newChildMethods.contains(parentMethod)){
+						newChildMethods.remove(parentMethod);
 					}
 				}
 				child.setUMLMethods(newChildMethods);

@@ -72,11 +72,11 @@ public class GenerateUML {
 				}
 			}
 			if(hasGetter && hasSetter && setVariable.equalsIgnoreCase(getVariable) && setterMethod != null){
-				if(setterMethod.getName().split("set")[1].equalsIgnoreCase(setVariable) && 
-						getterMethod.getName().split("get")[1].equalsIgnoreCase(getVariable)){
+				if(umlClass.hasVariable(getVariable)){
 					counselor.updateVariableToPublic(umlClass, getVariable);
 					counselor.removeSetterGetterMethod(umlClass, getterMethod, setterMethod);
 				}else {
+					umlSource.append(getterMethod.getParameterizedUMLString());
 					umlSource.append(setterMethod.getParameterizedUMLString());
 				}
 			}

@@ -109,5 +109,30 @@ public class UMLMethod {
 	public String getUMLString(){
 		return (type != null) ? (Modifiers.valueOf(modifier) + name + "(): " + type + "\n") : (Modifiers.valueOf(modifier) + name + "()");
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof UMLMethod)){
+			return false;
+		}
+		if(obj == this){
+			return true;
+		}
+		return this.getName().equalsIgnoreCase(((UMLMethod)obj).getName());
+	}
+	
+	
 	
 }
