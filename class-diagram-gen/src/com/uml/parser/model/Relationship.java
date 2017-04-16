@@ -87,6 +87,6 @@ public class Relationship {
 		if(parentCardinality != null && childCardinality != null){
 			return (parent.getName() + "\"" + parentCardinality + "\"" + type.getSymbol() + "\"" + childCardinality + "\"" + child.getName() + "\n\n");
 		}
-		return (parent.getName() + type.getSymbol() + child.getName() + "\n\n");
+		return (child.getName() + type.getSymbol() + parent.getName() + "\n\n");
 	}
 }

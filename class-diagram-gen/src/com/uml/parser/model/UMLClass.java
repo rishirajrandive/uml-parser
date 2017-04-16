@@ -11,9 +11,9 @@ public class UMLClass {
 
 	private List<UMLVariable> umlVariables;
 	private List<UMLMethod> umlMethods;
-	//private List<ConstructorDeclaration> constructorDeclarations;
 	private boolean isInterface;
 	private String name;
+	private List<String> parents;
 	
 	/**
 	 * Constructor for initializing the variables
@@ -23,6 +23,7 @@ public class UMLClass {
 		isInterface = false;
 		umlVariables = new ArrayList<>();
 		umlMethods = new ArrayList<>();
+		parents = new ArrayList<>();
 	}
 	
 	/**
@@ -76,4 +77,27 @@ public class UMLClass {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	/**
+	 * @return the parents
+	 */
+	public List<String> getParents() {
+		return parents;
+	}
+
+	/**
+	 * @param parents the parents to set
+	 */
+	public void setParents(List<String> parents) {
+		this.parents = parents;
+	}
+	
+	/**
+	 * Adds individual parent one by one
+	 * @param parent
+	 */
+	public void addParent(String parent){
+		this.parents.add(parent);
+	}
+	
 }

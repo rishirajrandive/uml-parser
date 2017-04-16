@@ -3,6 +3,7 @@ package com.uml.parser.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.uml.parser.enums.Modifiers;
 import com.uml.parser.enums.RelationType;
 import com.uml.parser.model.Relationship;
 import com.uml.parser.model.UMLClass;
@@ -60,6 +61,7 @@ public class Counselor {
 		if(classOrInterfaceDeclaration.getExtends() != null){
 			List<ClassOrInterfaceType> extendList = classOrInterfaceDeclaration.getExtends();
 			for(ClassOrInterfaceType ext : extendList){
+				umlClass.addParent(ext.getName());
 				createRelationship(umlClass, ext, RelationType.GENERALIZATION);
 			}
 		}
@@ -67,6 +69,7 @@ public class Counselor {
 		if(classOrInterfaceDeclaration.getImplements() != null){
 			List<ClassOrInterfaceType> implementList = classOrInterfaceDeclaration.getImplements();
 			for(ClassOrInterfaceType imp : implementList){
+				umlClass.addParent(imp.getName());
 				createRelationship(umlClass, imp, RelationType.REALIZATION);
 			}
 		}
@@ -123,15 +126,15 @@ public class Counselor {
 		Relationship relationship = new Relationship();
 		relationship.setType(relationType);
 		if(UMLHelper.isUMLClassArray(relative)){
-			relationship.setChild(counselor.getUMLClass(UMLHelper.getArrayClassName(relative)));
+			relationship.setParent(counselor.getUMLClass(UMLHelper.getArrayClassName(relative)));
 			if(relationType == RelationType.ASSOCIATION){
 				relationship.setParentCardinality("1");
 				relationship.setChildCardinality("0..*");
 			}
 		}else {
-			relationship.setChild(counselor.getUMLClass(relative.toString()));
+			relationship.setParent(counselor.getUMLClass(relative.toString()));
 		}
-		relationship.setParent(umlClass);
+		relationship.setChild(umlClass);
 		addRelation(relationship);
 		
 //		// As there is a relationship it means child is also a Class or Interface, so adding it to the list
@@ -225,5 +228,42 @@ public class Counselor {
 			}
 		}
 		return false;
+	}
+	
+	public void updateVariableToPublic(UMLClass umlClass, String variableName){
+		for(UMLVariable variable : umlClass.getUMLVariables()){
+			if(variable.getName().equalsIgnoreCase(variableName)){
+				variable.setModifier(Modifiers.PUBLIC.modifier);
+			}
+		}
+	}
+	
+	public void removeSetterGetterMethod(UMLClass umlClass, UMLMethod getterMethod, UMLMethod setterMethod){
+		List<UMLMethod> umlMethods = new ArrayList<>();
+		for(UMLMethod umlMethod : umlClass.getUMLMethods()){
+			if(!umlMethod.getName().equalsIgnoreCase(getterMethod.getName()) && 
+					!umlMethod.getName().equalsIgnoreCase(setterMethod.getName())){
+				umlMethods.add(umlMethod);
+			}
+		}
+	}
+	
+	public void removeUnneccessaryMethods(){
+		for(Relationship relationship : relationships){
+			if(relationship.getType() == RelationType.GENERALIZATION || relationship.getType() == RelationType.REALIZATION){
+				UMLClass parent = relationship.getParent();
+				UMLClass child = relationship.getChild();
+				List<UMLMethod> newChildMethods = new ArrayList<>();
+				
+				for(UMLMethod parentMethod : parent.getUMLMethods()){
+					for(UMLMethod childMethod : child.getUMLMethods()){
+						if(!parentMethod.getName().equalsIgnoreCase(childMethod.getName())){
+							newChildMethods.add(childMethod);
+						}
+					}
+				}
+				child.setUMLMethods(newChildMethods);
+			}
+		}
 	}
 }

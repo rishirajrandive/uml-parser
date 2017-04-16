@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import com.uml.parser.enums.Modifiers;
 import com.uml.parser.model.UMLClass;
 import com.uml.parser.model.UMLMethod;
 import com.uml.parser.model.UMLVariable;
@@ -51,6 +52,7 @@ public class ParseJava {
 				CompilationUnit compliationUnit = JavaParser.parse(file);
 				createUMLClass(compliationUnit);
 			}
+			//counselor.removeUnneccessaryMethods();
 		}catch(FileNotFoundException ex){
 			System.err.println("Error: File not found. Trace: "+ ex.getMessage());
 		}catch(IOException ex){
@@ -127,7 +129,7 @@ public class ParseJava {
 		}else {
 			MethodDeclaration method = (MethodDeclaration) body;
 			umlMethod.setConstructor(false);
-			umlMethod.setModifier(method.getModifiers());
+			umlMethod.setModifier(umlClass.isInterface() ? Modifiers.PUBLIC_ABSTRACT.modifier : method.getModifiers());
 			umlMethod.setName(method.getName());
 			umlMethod.setParameters(method.getParameters());
 			umlMethod.setType(method.getType());

@@ -38,7 +38,7 @@ public class GenerateUML {
 	 */
 	public void createGrammar(String outputFileName){
 		StringBuilder umlSource = new StringBuilder();
-		umlSource.append("@startuml\nskinparam classAttributeIconSize 0\n");
+		umlSource.append("@startuml \nskinparam classAttributeIconSize 0\n");
 		for(UMLClass umlClass : counselor.getUMLClasses()){
 			if(umlClass.isInterface()){
 				umlSource.append("interface " + umlClass.getName() + " << interface >> {\n");
@@ -46,19 +46,12 @@ public class GenerateUML {
 				umlSource.append("class " + umlClass.getName() + " {\n");
 			}
 			
-			List<UMLVariable> variables = umlClass.getUMLVariables();
-			for(UMLVariable variable : variables){
-				if(variable.getModifier() != Modifiers.PROTECTED.modifier && variable.getModifier() != Modifiers.PACKAGE.modifier && 
-						!variable.isUMLClassType()){
-					umlSource.append(variable.getUMLString());
-				}
-			}
-			
 			boolean hasSetter = false;
 			boolean hasGetter = false;
 			String setVariable = "";
 			String getVariable = "";
 			UMLMethod setterMethod = null;
+			UMLMethod getterMethod = null;
 			//FIXME For #5 main has no args shown
 			//FIXME No need to show the method for get and set, just make the variable public
 			//For test case #3 and #4, conflict in #4 get and set methods are shown
@@ -73,13 +66,27 @@ public class GenerateUML {
 				}else if(method.getName().contains("get")){
 					hasGetter = true;
 					getVariable = method.getName().split("get")[1];
-					umlSource.append(method.getUMLString());
+					getterMethod = method;
 				}else if(isMethodPublic(method)){
 					umlSource.append(method.getParameterizedUMLString());
 				}
 			}
 			if(hasGetter && hasSetter && setVariable.equalsIgnoreCase(getVariable) && setterMethod != null){
-				umlSource.append(setterMethod.getParameterizedUMLString());
+				if(setterMethod.getName().split("set")[1].equalsIgnoreCase(setVariable) && 
+						getterMethod.getName().split("get")[1].equalsIgnoreCase(getVariable)){
+					counselor.updateVariableToPublic(umlClass, getVariable);
+					counselor.removeSetterGetterMethod(umlClass, getterMethod, setterMethod);
+				}else {
+					umlSource.append(setterMethod.getParameterizedUMLString());
+				}
+			}
+			
+			List<UMLVariable> variables = umlClass.getUMLVariables();
+			for(UMLVariable variable : variables){
+				if(variable.getModifier() != Modifiers.PROTECTED.modifier && variable.getModifier() != Modifiers.PACKAGE.modifier && 
+						!variable.isUMLClassType()){
+					umlSource.append(variable.getUMLString());
+				}
 			}
 			
 			umlSource.append("}\n\n");
@@ -93,7 +100,7 @@ public class GenerateUML {
 			}
 		}
 		
-		umlSource.append("@enduml");
+		umlSource.append("hide circle \n@enduml");
 		System.out.println(umlSource.toString());
 		
 		generateUML(outputFileName, umlSource.toString());

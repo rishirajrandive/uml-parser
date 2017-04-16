@@ -9,21 +9,23 @@ package com.uml.parser.enums;
 public enum Modifiers {
 
 	PRIVATE(2, "-"),
-	PRIVATE_STATIC(10, "{static}"),
-	//PRIVATE_FINAL_STATIC(26, ""),
+	PRIVATE_STATIC(10, "- {static}"),
+	PRIVATE_FINAL_STATIC(26, ""),
 	
 	PROTECTED(4, "#"),
 	PROTECTED_STATIC(12, "{static}"),
-	//PROTECTED_FINAL_STATIC(28, ""),
+	PROTECTED_ABSTRACT(1028, "# {abstract}"),
+	PROTECTED_FINAL_STATIC(28, ""),
 	
 	PUBLIC(1, "+"),
-	PUBLIC_STATIC(9, "{static}"),
-	PUBLIC_ABSTRACT(1025, "+"),
-	//PUBLIC_FINAL_STATIC(25, ""),
+	PUBLIC_STATIC(9, "+ {static}"),
+	PUBLIC_ABSTRACT(1025, "+ {abstract}"),
+	PUBLIC_FINAL_STATIC(25, ""),
 	
 	PACKAGE(0, "~"),
-	PACKAGE_STATIC(8, "{static}");
-	//PACKAGE_FINAL_STATIC(24, "")
+	PACKAGE_STATIC(8, "~ {static}"),
+	PACKAGE_ABSTRACT(1024, "~ {abstract}"),
+	PACKAGE_FINAL_STATIC(24, "");
 	
 	
 	public int modifier;
