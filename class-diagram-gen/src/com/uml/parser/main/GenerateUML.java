@@ -1,7 +1,9 @@
 package com.uml.parser.main;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -37,6 +39,9 @@ public class GenerateUML {
 	 * @param outputFileName
 	 */
 	public void createGrammar(String outputFileName){
+		if(outputFileName.indexOf('.') != -1){
+			outputFileName = outputFileName.split("\\.")[0];
+		}
 		StringBuilder umlSource = new StringBuilder();
 		umlSource.append("@startuml \nskinparam classAttributeIconSize 0\n");
 		for(UMLClass umlClass : counselor.getUMLClasses()){
@@ -52,9 +57,6 @@ public class GenerateUML {
 			String getVariable = "";
 			UMLMethod setterMethod = null;
 			UMLMethod getterMethod = null;
-			//FIXME For #5 main has no args shown
-			//FIXME No need to show the method for get and set, just make the variable public
-			//For test case #3 and #4, conflict in #4 get and set methods are shown
 			List<UMLMethod> methods = umlClass.getUMLMethods();
 			for(UMLMethod method : methods){
 				if(method.isConstructor()){
@@ -101,8 +103,7 @@ public class GenerateUML {
 		}
 		
 		umlSource.append("hide circle \n@enduml");
-		System.out.println(umlSource.toString());
-		
+		dumpGrammarToFile(umlSource.toString());
 		generateUML(outputFileName, umlSource.toString());
 	}
 	
@@ -112,32 +113,46 @@ public class GenerateUML {
 	 * @param umlSource
 	 */
 	private void generateUML(String outputFileName, String umlSource){
-		OutputStream png = null;
-		try 
-		{
-			png = new FileOutputStream("/Users/rishi/Documents/workspace/uml-parser/class-diagram-gen/src/" + outputFileName + ".png");
-		}
-		catch (FileNotFoundException e1) 
-		{
-			e1.printStackTrace();
-		}
-		SourceStringReader reader = new SourceStringReader(umlSource);
-		try 
-		{
+		try{
+			OutputStream png = new FileOutputStream(outputFileName + ".png");
+			SourceStringReader reader = new SourceStringReader(umlSource);
 			reader.generateImage(png);
+			System.out.println("Output UML Class diagram with name '"+outputFileName +".png' is generated in base directory");
 		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
+		catch (FileNotFoundException exception) {
+			System.err.println("Failed to create output file " + exception.getMessage());
+		}
+		catch (IOException exception){
+			System.err.println("Failed to write to output file " + exception.getMessage());
 		}
 	}
 	
-	
+	/**
+	 * Returns true if the method is public, checks for all combinations
+	 * @param method
+	 * @return
+	 */
 	private boolean isMethodPublic(UMLMethod method){
 		if(method.getModifier() == Modifiers.PUBLIC.modifier || method.getModifier() == Modifiers.PUBLIC_STATIC.modifier ||
 				method.getModifier() == Modifiers.PUBLIC_ABSTRACT.modifier){
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Dumps the grammar generated for UML Class diagram to txt file.
+	 * @param grammar
+	 */
+	private void dumpGrammarToFile(String grammar){
+	    try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter("PlantUMLGrammar.txt"));
+			writer.write(grammar);
+		    writer.close();
+		    System.out.println("PlantUML grammar is dumped in 'PlantUMLGrammar.txt' file in base directory");
+		} catch (IOException e) {
+			System.err.println("Failed to dump grammar to text file: "+ e.getMessage());
+		}
+	    
 	}
 }

@@ -106,10 +106,6 @@ public class UMLMethod {
 		return (type != null) ? umlStr.append(": " + type + "\n").toString() : umlStr.append(" \n").toString();
 	}
 	
-	public String getUMLString(){
-		return (type != null) ? (Modifiers.valueOf(modifier) + name + "(): " + type + "\n") : (Modifiers.valueOf(modifier) + name + "()");
-	}
-
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -132,7 +128,4 @@ public class UMLMethod {
 		}
 		return this.getName().equalsIgnoreCase(((UMLMethod)obj).getName());
 	}
-	
-	
-	
 }

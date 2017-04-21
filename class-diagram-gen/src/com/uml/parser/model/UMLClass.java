@@ -100,6 +100,11 @@ public class UMLClass {
 		this.parents.add(parent);
 	}
 	
+	/**
+	 * Returns true if the Class already has variable
+	 * @param variable
+	 * @return
+	 */
 	public boolean hasVariable(String variable){
 		for(UMLVariable var : umlVariables){
 			if(var.getName().equalsIgnoreCase(variable)){

@@ -83,6 +83,10 @@ public class Relationship {
 		this.childCardinality = childCardinality;
 	}
 	
+	/**
+	 * Returns the grammar for UML class diagram
+	 * @return
+	 */
 	public String getUMLString(){
 		if(parentCardinality != null && childCardinality != null){
 			return (parent.getName() + "\"" + parentCardinality + "\"" + type.getSymbol() + "\"" + childCardinality + "\"" + child.getName() + "\n\n");

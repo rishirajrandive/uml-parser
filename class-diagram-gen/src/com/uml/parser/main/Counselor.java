@@ -81,8 +81,6 @@ public class Counselor {
 	 * @param method
 	 */
 	public void checkForRelatives(UMLClass umlClass, UMLMethod method){
-		//FIXME Remove methods which are overridden and are part of interface
-		//Test #4, conflict Interface Observer and Subject.  
 		if(method.getParameters() != null){
 			List<Parameter> parameters = method.getParameters();
 			for(Parameter parameter : parameters){
@@ -230,6 +228,11 @@ public class Counselor {
 		return false;
 	}
 	
+	/**
+	 * If the variable has getter and setter we update it to public
+	 * @param umlClass
+	 * @param variableName
+	 */
 	public void updateVariableToPublic(UMLClass umlClass, String variableName){
 		for(UMLVariable variable : umlClass.getUMLVariables()){
 			if(variable.getName().equalsIgnoreCase(variableName)){
@@ -238,6 +241,12 @@ public class Counselor {
 		}
 	}
 	
+	/**
+	 * Removes the getter and setter methods, as we are making the variable public
+	 * @param umlClass
+	 * @param getterMethod
+	 * @param setterMethod
+	 */
 	public void removeSetterGetterMethod(UMLClass umlClass, UMLMethod getterMethod, UMLMethod setterMethod){
 		List<UMLMethod> umlMethods = new ArrayList<>();
 		for(UMLMethod umlMethod : umlClass.getUMLMethods()){
@@ -248,6 +257,10 @@ public class Counselor {
 		}
 	}
 	
+	/**
+	 * TODO Confirm if this required or not
+	 * Removes the methods which are repeated in the Child classes, as they are already defined in parent classes
+	 */
 	public void removeUnneccessaryMethods(){
 		for(Relationship relationship : relationships){
 			if(relationship.getType() == RelationType.GENERALIZATION || relationship.getType() == RelationType.REALIZATION){

@@ -54,13 +54,4 @@ public enum Modifiers {
 		}
 		return "";
 	}
-	
-	public static int getModifier(Modifiers modifier){
-		for(Modifiers mod : Modifiers.values()){
-			if(mod.modifier == modifier.modifier){
-				return mod.modifier;
-			}
-		}
-		return -1;
-	}
 }

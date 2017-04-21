@@ -77,6 +77,10 @@ public class UMLVariable {
 		this.type = type;
 	}
 	
+	/**
+	 * Returns grammar for UML Class diagram
+	 * @return
+	 */
 	public String getUMLString(){
 		return Modifiers.valueOf(modifier) + name + ": " + type + initialValue + "\n";
 	}

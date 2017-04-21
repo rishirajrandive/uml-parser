@@ -48,7 +48,7 @@ public class ParseJava {
 	public void parseFiles(List<File> files){
 		try{
 			for(File file : files){
-				System.out.println(file.getAbsolutePath());
+				System.out.println("Parsing " + file.getAbsolutePath() + " file...");
 				CompilationUnit compliationUnit = JavaParser.parse(file);
 				createUMLClass(compliationUnit);
 			}
@@ -74,7 +74,6 @@ public class ParseJava {
 			
 			UMLClass umlClass = counselor.getUMLClass(type.getName());
 			umlClass.setInterface(isInterface);
-			System.out.println("Name "+ umlClass.getName());
 			
 			counselor.checkForRelatives(umlClass, type);
 			
