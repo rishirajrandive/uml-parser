@@ -1,41 +1,24 @@
 @startuml 
 skinparam classAttributeIconSize 0
-interface A1 << interface >> {
+class A {
+-x: int
+-y: int[]
 }
 
-interface A2 << interface >> {
+class B {
 }
 
-class B1 {
+class C {
 }
 
-class P {
+class D {
 }
 
-class B2 {
-}
+B"1"--"0..*"A
 
-class C1 {
-+test(a1: A1): void
-}
+A--C
 
-class C2 {
-+test(a2: A2): void
-}
-
-B1--|>P
-
-B1..|>A1
-
-B2--|>P
-
-B2..|>A1
-
-B2..|>A2
-
-C1..>A1
-
-C2..>A2
+D"1"--"0..*"A
 
 hide circle 
 @enduml

@@ -1,0 +1,94 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.padding-body{
+  padding: 10px;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.glyphicon-plus-sign {
+  font-size: 22px;
+}
+
+
+
+.row-select {
+  background-color: #a7dbd8;
+}
+
+.btn:focus, .upload-btn:focus, .submit-btn:focus{
+  outline: 0 !important;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: #4791D2;
+}
+
+body {
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+}
+
+.row {
+  margin-top: 80px;
+}
+
+.upload-btn, .submit-btn {
+  color: #ffffff;
+  background-color: #F89406;
+  border: none;
+}
+
+.upload-btn:hover,
+.upload-btn:focus,
+.upload-btn:active,
+.submit-btn:hover,
+.submit-btn:focus,
+.submit-btn:active{
+  color: #ffffff;
+  background-color: #FA8900;
+  border: none;
+}
+
+h4 {
+  padding-bottom: 30px;
+  color: #B8BDC1;
+}
+
+.glyphicon {
+  font-size: 5em;
+  color: #9CA3A9;
+}
+
+h2 {
+  margin-top: 15px;
+  color: #68757E;
+}
+
+.panel {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+#upload-input {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .main-container {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 450px;
+  }
+}

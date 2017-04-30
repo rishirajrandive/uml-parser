@@ -10,8 +10,5 @@ public class Main {
         s.setState("Hey, Its Friday!");
         p.showState();
         o.showState();
-        
-        //System.out.println("Final grammar \n"+ SequenceGen.getSequenceDiagramGrammar());
-        //generateUML("sample", SequenceGen.getSequenceDiagramGrammar());
     }
 }
