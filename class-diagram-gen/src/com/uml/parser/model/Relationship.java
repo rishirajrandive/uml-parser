@@ -89,7 +89,7 @@ public class Relationship {
 	 */
 	public String getUMLString(){
 		if(parentCardinality != null && childCardinality != null){
-			return (parent.getName() + "\"" + parentCardinality + "\"" + type.getSymbol() + "\"" + childCardinality + "\"" + child.getName() + "\n\n");
+			return (child.getName() + "\"" + parentCardinality + "\"" + type.getSymbol() + "\"" + childCardinality + "\"" + parent.getName() + "\n\n");
 		}
 		return (child.getName() + type.getSymbol() + parent.getName() + "\n\n");
 	}

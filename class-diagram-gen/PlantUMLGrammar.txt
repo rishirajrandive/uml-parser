@@ -1,24 +1,51 @@
 @startuml 
 skinparam classAttributeIconSize 0
-class A {
--x: int
--y: int[]
+interface Component << interface >> {
++ {abstract}operation(): String
 }
 
-class B {
+class ConcreteComponent {
++operation(): String
 }
 
-class C {
+class ConcreteDecoratorA {
++ConcreteDecoratorA(c: Component) 
++operation(): String
+-addedState: String
 }
 
-class D {
+class Decorator {
++Decorator(c: Component) 
++operation(): String
 }
 
-B"1"--"0..*"A
+class ConcreteDecoratorB {
++ConcreteDecoratorB(c: Component) 
++operation(): String
+-addedState: String
+}
 
-A--C
+class Tester {
++ {static}main(args: String[]): void
+}
 
-D"1"--"0..*"A
+ConcreteComponent..|>Component
+
+ConcreteDecoratorA--|>Decorator
+
+ConcreteDecoratorA..>Component
+
+ConcreteDecoratorB--|>Decorator
+
+ConcreteDecoratorB..>Component
+
+Decorator..|>Component
+
+Decorator--Component
+
+Decorator..>Component
+
+Tester..>Component
 
 hide circle 
 @enduml

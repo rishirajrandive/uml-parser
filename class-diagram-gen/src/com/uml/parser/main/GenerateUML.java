@@ -59,6 +59,9 @@ public class GenerateUML {
 			UMLMethod getterMethod = null;
 			List<UMLMethod> methods = umlClass.getUMLMethods();
 			for(UMLMethod method : methods){
+				if(!isMethodPublic(method)){
+					continue;
+				}
 				if(method.isConstructor()){
 					umlSource.append(method.getParameterizedUMLString());
 				}else if(method.getName().contains("set")){

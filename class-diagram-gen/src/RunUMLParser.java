@@ -32,6 +32,7 @@ public class RunUMLParser {
 
 		RunUMLParser obj = new RunUMLParser();
 		obj.startProcess(args[0], args[1]);
+		obj.clearTestFolder();
 	}
 	
 	/**
@@ -45,7 +46,7 @@ public class RunUMLParser {
 				unzipAndProcess(inputPath, outputFileName);
 				
 			} catch (IOException e) {
-				System.err.println("Failed to unzip the folder. Note: Keep the Java files in root folder of zip");
+				System.err.println("Failed to unzip the folder. Note: Keep the Java files in root folder of zip: "+ e.getMessage());
 			}
 		} else {
 			File folder = new File(inputPath);
@@ -65,7 +66,7 @@ public class RunUMLParser {
 	private List<File> getFileListFromFolder(File folder) {
 		List<File> files = new ArrayList<>();
 		File[] filesInFolder = folder.listFiles();
-		for (int i = 0; i < filesInFolder.length; i++) {
+		for (int i = 0; filesInFolder != null && i < filesInFolder.length; i++) {
 			File file = filesInFolder[i];
 			if (isValidFile(file)) {
 				files.add(file);
@@ -96,7 +97,8 @@ public class RunUMLParser {
 	private void processFiles(List<File> files, String outputFileName) {
 		if (files.size() == 0) {
 			System.out.println(
-					"Folder path has no .java files, program works only for Java files. Check and re-run the program");
+					"Folder path has no .java files, program works only for Java files. Check and re-run the program\n"
+					+ "If you are using Zip file make sure the Java files are in home directory of Zip file");
 			return;
 		}
 		ParseJava obj = new ParseJava();
@@ -117,7 +119,7 @@ public class RunUMLParser {
     	String destDirectory = "test";
         File destDir = new File(destDirectory);
         if (!destDir.exists()) {
-            destDir.mkdir();
+        	destDir.mkdir();
         }
         
         System.out.println(zipFilePath.substring(zipFilePath.lastIndexOf(File.separator), zipFilePath.indexOf(".")));
@@ -129,8 +131,8 @@ public class RunUMLParser {
             if (!entry.isDirectory()) {
                 // if the entry is a file, extracts it
                 extractFile(zipIn, filePath);
-            } else {
-                // if the entry is a directory, make the directory
+            }else {
+            	// if the entry is a directory, make the directory
                 File dir = new File(filePath);
                 dir.mkdir();
             }
@@ -139,8 +141,8 @@ public class RunUMLParser {
         }
         zipIn.close();
         
-        File file = new File(destDir.getAbsolutePath() + File.separator + zipFilePath.substring(zipFilePath.lastIndexOf(File.separator), zipFilePath.indexOf(".")));
-		processFiles(getFileListFromFolder(file), outputFileName);
+        File file = new File(destDir.getAbsolutePath());
+        processFiles(getFileListFromFolder(file), outputFileName);
     }
     /**
      * Extracts a zip entry (file entry)
@@ -156,5 +158,15 @@ public class RunUMLParser {
             bos.write(bytesIn, 0, read);
         }
         bos.close();
+    }
+    
+    private void clearTestFolder(){
+    	String destDirectory = "test";
+        File destDir = new File(destDirectory);
+        if (destDir.exists()) {
+            for(File file : destDir.listFiles()){
+            	file.delete();
+            }
+        }
     }
 }
