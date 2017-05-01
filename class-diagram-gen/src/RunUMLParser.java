@@ -159,6 +159,9 @@ public class RunUMLParser {
         bos.close();
     }
     
+    /**
+     * Clears the test folder created for keeping the extracted files
+     */
     private void clearTestFolder(){
     	String destDirectory = "test";
         File destDir = new File(destDirectory);
