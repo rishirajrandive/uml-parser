@@ -17,7 +17,7 @@ CDG_MODEL = $(CDG_BASE_DIR)com/uml/parser/model/*.java
 # Main class which runs the program
 CDG_RUN = RunUMLParser
 # Complete folder path for the Java files for which UML class diagram is required
-TEST_FOLDER_PATH = /Users/rishi/Downloads/cmpe202-master/umlparser/uml-parser-test-5
+TEST_FOLDER_PATH = /Users/rishi/Downloads/cmpe202-master/umlparser/test2.zip
 # UML Class diagram output PNG file name
 OUTPUT_FILE_NAME = umloutput
 
@@ -35,3 +35,6 @@ generate-class-diagram:
 	javac -d $(CDG_BIN_DIR) -cp .:$(CDG_BIN_DIR):$(CDG_LIB_DIR) $(CDG_BASE_DIR)*.java
 	##### Running UML Class diagram generator ######
 	java -cp .:$(CDG_BIN_DIR):$(CDG_LIB_DIR) $(CDG_RUN) $(TEST_FOLDER_PATH) $(OUTPUT_FILE_NAME)
+
+execute-jar:
+	java -jar UMLClassDiagramGen.jar $(TEST_FOLDER_PATH) $(OUTPUT_FILE_NAME)

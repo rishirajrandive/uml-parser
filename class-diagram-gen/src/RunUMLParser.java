@@ -24,7 +24,7 @@ public class RunUMLParser {
 	public static void main(String[] args) {
 
 		if (args.length < 2) {
-			System.err.println("Invalid arguments, need two arguments!");
+			System.out.println("Invalid arguments, need two arguments!");
 			System.out.println("1. Complete folder path to Java files.   2. UML Class diagram output PNG file name");
 			System.out.println("Output file will be of .png format so no need to enter extenstion");
 			return;
@@ -46,7 +46,7 @@ public class RunUMLParser {
 				unzipAndProcess(inputPath, outputFileName);
 				
 			} catch (IOException e) {
-				System.err.println("Failed to unzip the folder. Note: Keep the Java files in root folder of zip: "+ e.getMessage());
+				System.out.println("Failed to unzip the folder. \nNote: Keep the Java files in root folder of zip:\n"+ e.getMessage());
 			}
 		} else {
 			File folder = new File(inputPath);
@@ -122,7 +122,6 @@ public class RunUMLParser {
         	destDir.mkdir();
         }
         
-        System.out.println(zipFilePath.substring(zipFilePath.lastIndexOf(File.separator), zipFilePath.indexOf(".")));
         ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
         ZipEntry entry = zipIn.getNextEntry();
         // iterates over entries in the zip file

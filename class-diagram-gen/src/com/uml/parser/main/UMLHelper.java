@@ -82,10 +82,8 @@ public class UMLHelper {
 	 */
 	public static String getElementName(String typeStr){
 		if(typeStr.contains("[")){
-			System.out.println("Found array []");
 			typeStr = typeStr.split("\\[")[0];
 		}else if(typeStr.contains("<")){
-			System.out.println("Found array <>");
 			typeStr = typeStr.split("<")[0];
 		}
 		return typeStr;
