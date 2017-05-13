@@ -1,13 +1,11 @@
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -101,16 +99,18 @@ public class SequenceDiagramGenerator {
 							+ "If you are using Zip file make sure the Java files are in home directory of Zip file");
 			return;
 		}
-		
+
 		try {
-            Process processCompile = Runtime.getRuntime().exec("/Users/rishi/aspectj1.8/bin/ajc -1.8 -cp .:lib/aspectjrt.jar:lib/plantuml.jar test-case/*.java test-case/*.aj");
-            printOutput(" Error:", processCompile.getErrorStream());
-            Process processRun = Runtime.getRuntime().exec("java -cp .:lib/aspectjrt.jar:lib/plantuml.jar:test-case/ Main");
-            printOutput(" Output:", processRun.getInputStream());
-            printOutput(" Error:", processRun.getErrorStream());
-        } catch (IOException e) {
-            System.out.println("Error generating UML Sequence diagram: "+ e.getMessage());
-        }
+			Process processCompile = Runtime.getRuntime().exec(
+					"/Users/rishi/aspectj1.8/bin/ajc -1.8 -cp .:lib/aspectjrt.jar:lib/plantuml.jar test-case/*.java test-case/*.aj");
+			printOutput(" Error:", processCompile.getErrorStream());
+			Process processRun = Runtime.getRuntime()
+					.exec("java -cp .:lib/aspectjrt.jar:lib/plantuml.jar:test-case/ Main");
+			printOutput(" Output:", processRun.getInputStream());
+			printOutput(" Error:", processRun.getErrorStream());
+		} catch (IOException e) {
+			System.out.println("Error generating UML Sequence diagram: " + e.getMessage());
+		}
 	}
 
 	/**
@@ -123,31 +123,31 @@ public class SequenceDiagramGenerator {
 	 */
 	public void unzipAndProcess(String zipFilePath) throws IOException {
 		String destDirectory = "test-case";
-        File destDir = new File(destDirectory);
-        if (!destDir.exists()) {
-        	destDir.mkdir();
-        }
-        
-        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
-        ZipEntry entry = zipIn.getNextEntry();
-        // iterates over entries in the zip file
-        while (entry != null) {
-            String filePath = destDirectory + File.separator + entry.getName();
-            if (!entry.isDirectory()) {
-                // if the entry is a file, extracts it
-                extractFile(zipIn, filePath);
-            }else {
-            	// if the entry is a directory, make the directory
-                File dir = new File(filePath);
-                dir.mkdir();
-            }
-            zipIn.closeEntry();
-            entry = zipIn.getNextEntry();
-        }
-        zipIn.close();
-        
-        File file = new File(destDir.getAbsolutePath());
-        processFiles(getFileListFromFolder(file));
+		File destDir = new File(destDirectory);
+		if (!destDir.exists()) {
+			destDir.mkdir();
+		}
+
+		ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
+		ZipEntry entry = zipIn.getNextEntry();
+		// iterates over entries in the zip file
+		while (entry != null) {
+			String filePath = destDirectory + File.separator + entry.getName();
+			if (!entry.isDirectory()) {
+				// if the entry is a file, extracts it
+				extractFile(zipIn, filePath);
+			} else {
+				// if the entry is a directory, make the directory
+				File dir = new File(filePath);
+				dir.mkdir();
+			}
+			zipIn.closeEntry();
+			entry = zipIn.getNextEntry();
+		}
+		zipIn.close();
+
+		File file = new File(destDir.getAbsolutePath());
+		processFiles(getFileListFromFolder(file));
 	}
 
 	/**
@@ -168,26 +168,33 @@ public class SequenceDiagramGenerator {
 	}
 
 	/**
-	 * 
+	 * Clears test folders once done
 	 */
 	private void clearTestFolder() {
 		String destDirectory = "test-case";
 		File destDir = new File(destDirectory);
 		if (destDir.exists()) {
 			for (File file : destDir.listFiles()) {
-				if(!file.getName().equals("SequenceGen.aj"))
+				if (!file.getName().equals("SequenceGen.aj"))
 					file.delete();
 			}
 		}
 	}
-	
+
+	/**
+	 * Print the output while generating the sequencesOs
+	 * 
+	 * @param name
+	 * @param ins
+	 * @throws IOException
+	 */
 	private void printOutput(String name, InputStream ins) throws IOException {
-        String line = null;
-        BufferedReader in = new BufferedReader(new InputStreamReader(ins));
-        while ((line = in.readLine()) != null) {
-            System.out.println(name + " " + line);
-        }
-        in.close();
-      }
+		String line = null;
+		BufferedReader in = new BufferedReader(new InputStreamReader(ins));
+		while ((line = in.readLine()) != null) {
+			System.out.println(name + " " + line);
+		}
+		in.close();
+	}
 
 }
