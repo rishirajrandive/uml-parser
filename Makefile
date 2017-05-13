@@ -36,7 +36,7 @@ generate-class-diagram:
 	java -cp .:$(CDG_BIN_DIR):$(CDG_LIB_DIR) $(CDG_RUN) $(CLASS_TEST_FOLDER_PATH) $(CLASS_TEST_FOLDER_PATH)
 
 execute-class-diagram-jar:
-	java -jar UMLClassDiagramGen.jar $(CLASS_TEST_FOLDER_PATH) $(CLASS_TEST_FOLDER_PATH)
+	java -jar class-diagram-gen/executable-jar/UMLClassDiagramGen.jar $(CLASS_TEST_FOLDER_PATH) $(CLASS_TEST_FOLDER_PATH)
 
 
 

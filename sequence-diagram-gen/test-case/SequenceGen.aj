@@ -117,7 +117,7 @@ public aspect SequenceGen {
 			SourceStringReader reader = new SourceStringReader(umlSource);
 			reader.generateImage(png);
 			System.out.println(
-					"Output UML Class diagram with name '" + outputFileName + ".png' is generated in base directory");
+					"Output UML Sequence diagram with name '" + outputFileName + ".png' is generated in base directory");
 		} catch (FileNotFoundException exception) {
 			System.err.println("Failed to create output file " + exception.getMessage());
 		} catch (IOException exception) {
