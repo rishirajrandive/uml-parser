@@ -56,9 +56,9 @@ public class ParseJava {
 		}catch(FileNotFoundException ex){
 			System.err.println("Error: File not found. Trace: "+ ex.getMessage());
 		}catch(IOException ex){
-			System.err.println("Error: IO Exception. Trace: "+ ex.getStackTrace());
+			System.err.println("Error: IO Exception. Trace: "+ ex.getMessage());
 		}catch(ParseException ex){
-			System.err.println("Error: Parse exception. Trace: "+ ex.getStackTrace());
+			System.err.println("Error: Parse exception. Trace: "+ ex.getMessage());
 		}
 	}
 	

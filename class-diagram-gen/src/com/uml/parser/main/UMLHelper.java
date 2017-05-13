@@ -114,7 +114,7 @@ public class UMLHelper {
 				typeStr.equalsIgnoreCase("Short") || typeStr.equalsIgnoreCase("Character") ||
 		        typeStr.equalsIgnoreCase("Byte") || typeStr.equalsIgnoreCase("Boolean") || 
 		        typeStr.equalsIgnoreCase("String") || typeStr.equalsIgnoreCase("ArrayList") ||
-		        typeStr.equalsIgnoreCase("Collection")){
+		        typeStr.equalsIgnoreCase("Collection") || typeStr.equalsIgnoreCase("HashSet")){
 			return false;
 		}
 		return true;

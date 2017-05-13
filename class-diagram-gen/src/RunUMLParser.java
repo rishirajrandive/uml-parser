@@ -18,6 +18,7 @@ import com.uml.parser.main.ParseJava;
  *
  */
 public class RunUMLParser {
+	static {};
 
 	private static final int BUFFER_SIZE = 4096;
 	

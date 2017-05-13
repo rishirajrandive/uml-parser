@@ -64,11 +64,11 @@ public class GenerateUML {
 				}
 				if(method.isConstructor()){
 					umlSource.append(method.getParameterizedUMLString());
-				}else if(method.getName().contains("set")){
+				}else if(method.getName().contains("set") && method.getName().split("set").length > 1){
 					hasSetter = true;
 					setVariable = method.getName().split("set")[1];
 					setterMethod = method;
-				}else if(method.getName().contains("get")){
+				}else if(method.getName().contains("get") && method.getName().split("get").length > 1){
 					hasGetter = true;
 					getVariable = method.getName().split("get")[1];
 					getterMethod = method;
