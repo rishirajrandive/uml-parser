@@ -15,7 +15,7 @@
     "express": "~4.14.0",
     "formidable": "^1.1.1",
     "log4js": "^1.0.1",
-    "morgan": "~1.7.0",
+    "morgan": "~1.9.1",
     "request": "^2.79.0",
     "serve-favicon": "~2.3.0"
   }
